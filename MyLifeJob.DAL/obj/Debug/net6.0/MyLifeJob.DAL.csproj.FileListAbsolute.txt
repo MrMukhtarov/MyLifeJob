@@ -1,0 +1,17 @@
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\bin\Debug\net6.0\MyLifeJob.DAL.deps.json
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\bin\Debug\net6.0\MyLifeJob.DAL.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\bin\Debug\net6.0\MyLifeJob.DAL.pdb
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\bin\Debug\net6.0\MyLifeJob.Core.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\bin\Debug\net6.0\MyLifeJob.Core.pdb
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.csproj.AssemblyReference.cache
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.AssemblyInfoInputs.cache
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.AssemblyInfo.cs
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.csproj.CoreCompileInputs.cache
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.csproj.CopyComplete
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\refint\MyLifeJob.DAL.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.pdb
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\ref\MyLifeJob.DAL.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\bin\Debug\net6.0\MyLifeJob.DAL.runtimeconfig.json
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.DAL\obj\Debug\net6.0\MyLifeJob.DAL.genruntimeconfig.cache

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\MyLifeJob.API.props" />
+</Project>

@@ -1,0 +1,12 @@
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\bin\Debug\net6.0\MyLifeJob.Core.deps.json
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\bin\Debug\net6.0\MyLifeJob.Core.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\bin\Debug\net6.0\MyLifeJob.Core.pdb
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\MyLifeJob.Core.csproj.AssemblyReference.cache
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\MyLifeJob.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\MyLifeJob.Core.AssemblyInfoInputs.cache
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\MyLifeJob.Core.AssemblyInfo.cs
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\MyLifeJob.Core.csproj.CoreCompileInputs.cache
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\MyLifeJob.Core.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\refint\MyLifeJob.Core.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\MyLifeJob.Core.pdb
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.Core\obj\Debug\net6.0\ref\MyLifeJob.Core.dll
