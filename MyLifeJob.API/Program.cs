@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using MyLifeJob.DAL.Contexts;
+
 namespace MyLifeJob.API
 {
     public class Program
@@ -13,7 +16,13 @@ namespace MyLifeJob.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbContext<AppDbContext>(opt =>
+            {
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+            });
+
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
