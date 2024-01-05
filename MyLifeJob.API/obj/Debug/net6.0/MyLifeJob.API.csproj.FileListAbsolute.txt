@@ -82,3 +82,7 @@ C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\AutoMapper.Exte
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\FluentValidation.dll
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\FluentValidation.AspNetCore.dll
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\MailKit.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\MimeKit.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\NETCore.MailKit.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\BouncyCastle.Crypto.dll

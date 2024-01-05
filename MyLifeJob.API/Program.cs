@@ -7,6 +7,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using MyLifeJob.Core.Entity;
 using MyLifeJob.API.Helpers;
+using MyLifeJob.Business.ExternalServices.Interfaces;
+using MyLifeJob.Business.ExternalServices.Implements;
 
 namespace MyLifeJob.API
 {
@@ -15,6 +17,7 @@ namespace MyLifeJob.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configuration = builder.Configuration;
 
             // Add services to the container.
 
@@ -47,6 +50,11 @@ namespace MyLifeJob.API
             .AddEntityFrameworkStores<AppDbContext>()
             .AddSignInManager<SignInManager<AppUser>>()
             .AddDefaultTokenProviders();
+
+            var emailConfig = configuration.GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            builder.Services.AddSingleton(emailConfig);
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
 
             var app = builder.Build();
