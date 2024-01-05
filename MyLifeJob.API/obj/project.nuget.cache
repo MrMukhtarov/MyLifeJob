@@ -1,14 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "oHsQJ2J5UtmH4WpiGxeEetK+KrHALBZNEfJvsTyR+46KzpzFaDJQ2Pc+J4jJaJZX+0FsYyFqp6M220vFLRhAXw==",
+  "dgSpecHash": "g8kXMUqP7ePcVxhr65iTQVnAEW07CFdufqcbVnA7obk9DwMYNBoRGWc70lp6J3oQgYjBKGIh1uJLz6fB7u87ig==",
   "success": true,
   "projectFilePath": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\MyLifeJob.API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\hp\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\fluentvalidation\\11.9.0\\fluentvalidation.11.9.0.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.9.0\\fluentvalidation.dependencyinjectionextensions.11.9.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.25\\microsoft.aspnetcore.cryptography.internal.6.0.25.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.25\\microsoft.aspnetcore.cryptography.keyderivation.6.0.25.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.25\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.25.nupkg.sha512",
-    "C:\\Users\\hp\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.25\\microsoft.entityframeworkcore.6.0.25.nupkg.sha512",
@@ -57,6 +64,7 @@
     "C:\\Users\\hp\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
   "logs": []

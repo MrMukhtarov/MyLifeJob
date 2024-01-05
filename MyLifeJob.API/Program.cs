@@ -1,5 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using MyLifeJob.Business.Profiles;
 using MyLifeJob.DAL.Contexts;
+using MyLifeJob.Business;
+using MyLifeJob.Business.Services.Implements;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
+using MyLifeJob.Core.Entity;
+using MyLifeJob.API.Helpers;
 
 namespace MyLifeJob.API
 {
@@ -21,8 +28,28 @@ namespace MyLifeJob.API
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
             });
 
-            var app = builder.Build();
+            builder.Services.AddAutoMapper(typeof(UserMappingProfiles).Assembly);
 
+            builder.Services.AddService();
+
+            builder.Services.AddFluentValidation(res =>
+            {
+                res.RegisterValidatorsFromAssemblyContaining<AppUserService>();
+            });
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>(res =>
+            {
+                res.Password.RequireNonAlphanumeric = false;
+                res.SignIn.RequireConfirmedEmail = true;
+                res.Lockout.MaxFailedAccessAttempts = 3;
+                res.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager<SignInManager<AppUser>>()
+            .AddDefaultTokenProviders();
+
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -33,8 +60,11 @@ namespace MyLifeJob.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
+            app.UseCustomExceptionHandler();
 
             app.MapControllers();
 
