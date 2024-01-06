@@ -15,6 +15,7 @@ public class UsersController : ControllerBase
     readonly UserManager<AppUser> _userManager;
     readonly IEmailService _email;
 
+
     public UsersController(IAppUserService service, UserManager<AppUser> userManager, IEmailService email)
     {
         _service = service;
@@ -23,16 +24,24 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Register([FromForm]RegisterDto dto)
+    public async Task<IActionResult> Register([FromForm] RegisterDto dto)
     {
         await _service.Register(dto);
+
         var user = await _userManager.FindByEmailAsync(dto.Email);
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var confirmationLink = Url.Action("ConfirmEmail", "Users", new {token, email = dto.Email},Request.Scheme);
-        var message = new Message(new string[] { dto.Email! }, "Confirmation Email Link", confirmationLink!);
+        var confirmationLink = Url.Action("ConfirmEmail", "Users", new { token, email = dto.Email }, Request.Scheme);
+
+        string emailContentTemplate = _email.GetEmailConfirmationTemplate("EmailConfirm.html");
+
+        string emailContent = emailContentTemplate.Replace("{USERNAME}", user.UserName).Replace("{CONFIRMATION_LINK}", confirmationLink);
+
+        var message = new Message(new string[] { dto.Email! }, "Confirmation email link", emailContent);
         _email.SendEmail(message);
+
         return StatusCode(StatusCodes.Status201Created);
     }
+
 
     [HttpGet("[action]")]
     public async Task<IActionResult> ConfirmEmail(string token, string email)

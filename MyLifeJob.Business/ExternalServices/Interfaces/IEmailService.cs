@@ -5,4 +5,5 @@ namespace MyLifeJob.Business.ExternalServices.Interfaces;
 public interface IEmailService
 {
     void SendEmail(Message message);
+    string GetEmailConfirmationTemplate(string v);
 }

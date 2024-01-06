@@ -1,11 +1,37 @@
 {
   "Version": 1,
-  "Hash": "gIHBY4kDcjr1k4TOR3kIejHOMVqw+A116EJvE6QKSBo=",
+  "Hash": "3pPywNenxEsafZb/IB1J6yZGY+Fj9cCqOexF77p9YPU=",
   "Source": "MyLifeJob.API",
   "BasePath": "_content/MyLifeJob.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "MyLifeJob.API\\wwwroot",
+      "Source": "MyLifeJob.API",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
+      "BasePath": "_content/MyLifeJob.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\EmailConfirm.html",
+      "SourceId": "MyLifeJob.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
+      "BasePath": "_content/MyLifeJob.API",
+      "RelativePath": "EmailConfirm.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\EmailConfirm.html"
+    }
+  ]
 }

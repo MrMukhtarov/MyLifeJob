@@ -21,9 +21,15 @@ public class EmailService : IEmailService
         emailmessage.From.Add(new MailboxAddress("email", _configuration.From));
         emailmessage.To.AddRange(message.To);
         emailmessage.Subject = message.Subject;
-        emailmessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
+        emailmessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Content };
 
         return emailmessage;
+    }
+
+    public string GetEmailConfirmationTemplate(string templatePath)
+    {
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", templatePath);
+        return File.ReadAllText(path);
     }
 
     public void SendEmail(Message message)

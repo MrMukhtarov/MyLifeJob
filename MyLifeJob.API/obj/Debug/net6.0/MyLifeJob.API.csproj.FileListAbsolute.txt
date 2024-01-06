@@ -86,3 +86,4 @@ C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\MailKit.dll
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\MimeKit.dll
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\NETCore.MailKit.dll
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\MyLifeJob.API.staticwebassets.runtime.json
