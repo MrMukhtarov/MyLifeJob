@@ -9,6 +9,9 @@ using MyLifeJob.Core.Entity;
 using MyLifeJob.API.Helpers;
 using MyLifeJob.Business.ExternalServices.Interfaces;
 using MyLifeJob.Business.ExternalServices.Implements;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MyLifeJob.API
 {
@@ -55,6 +58,28 @@ namespace MyLifeJob.API
                 .Get<EmailConfiguration>();
             builder.Services.AddSingleton(emailConfig);
             builder.Services.AddScoped<IEmailService, EmailService>();
+
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    LifetimeValidator = (_, expires, token, _) => token != null ? DateTime.UtcNow.AddHours(4) < expires : false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigninKey"]))
+                };
+            });
+            builder.Services.AddAuthorization();
 
 
             var app = builder.Build();

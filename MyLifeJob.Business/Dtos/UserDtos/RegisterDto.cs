@@ -2,7 +2,7 @@
 
 namespace MyLifeJob.Business.Dtos.UserDtos;
 
-public class RegisterDto
+public record RegisterDto
 {
     public string Name { get; set; }
     public string Surname { get; set; }
@@ -45,7 +45,8 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
             .WithMessage("Please enter valid email adress");
         RuleFor(u => u.Password)
             .NotEmpty().WithMessage("Password not be empty")
-            .NotNull().WithMessage("Password not be null");
+            .NotNull().WithMessage("Password not be null")
+            .MinimumLength(6).WithMessage("Password length must be grather than 6");
         RuleFor(u => u.ConfirmPassword)
             .Equal(u => u.Password).WithMessage("Password does not match");
     }
