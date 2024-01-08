@@ -7,4 +7,6 @@ public interface IAppUserService
 {
     Task Register(RegisterDto dto);
     Task<TokenResponseDto> Login(LoginDto dto);
+    Task<TokenResponseDto> LoginWithRefreshToken(string refreshToken);
+    Task UpdateAsync(UpdateUserDto dto);
 }

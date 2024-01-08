@@ -9,5 +9,6 @@ public class UserMappingProfiles : Profile
     public UserMappingProfiles()
     {
         CreateMap<RegisterDto, AppUser>();
+        CreateMap<UpdateUserDto, AppUser>();
     }
 }

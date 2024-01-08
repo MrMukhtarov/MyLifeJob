@@ -14,4 +14,6 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.ApplyConfigurationsFromAssembly(typeof(AppUserConfiguration).Assembly);
         base.OnModelCreating(builder);
     }
+
+    public DbSet<EmailToken> EmailTokens { get; set; }
 }
