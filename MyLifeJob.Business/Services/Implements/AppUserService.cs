@@ -20,13 +20,27 @@ public class AppUserService : IAppUserService
     readonly IHttpContextAccessor _accessor;
     readonly string? _userId;
 
-    public AppUserService(UserManager<AppUser> user, IMapper mapper, ITokenService token, IHttpContextAccessor accessor)
+    public AppUserService(UserManager<AppUser> user, IMapper mapper, ITokenService token, IHttpContextAccessor accessor
+        )
     {
         _user = user;
         _mapper = mapper;
         _token = token;
         _accessor = accessor;
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    }
+
+    public async Task ChangePassword(UpdateUserPasswordDto dto)
+    {
+        if (string.IsNullOrEmpty(_userId)) throw new ArgumentException();
+        var user = await _user.FindByIdAsync(_userId);
+        if (user == null) throw new UserNotFoundException();
+
+        var checkCurrent = await _user.CheckPasswordAsync(user, dto.CurrentPassword);
+        if (checkCurrent == false) throw new CurrentPaswordIsInvalidException();
+
+        var changePassword = await _user.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+        if (!changePassword.Succeeded) throw new UpdatePasswordInvalidException();
     }
 
     public async Task<TokenResponseDto> Login(LoginDto dto)
@@ -42,8 +56,8 @@ public class AppUserService : IAppUserService
     public async Task<TokenResponseDto> LoginWithRefreshToken(string refreshToken)
     {
         if (string.IsNullOrWhiteSpace(refreshToken)) throw new ArgumentNullException();
-        var user = await _user.Users.SingleOrDefaultAsync(s => s.RefreshToken ==  refreshToken);
-        if(user == null) throw new UserNotFoundException();
+        var user = await _user.Users.SingleOrDefaultAsync(s => s.RefreshToken == refreshToken);
+        if (user == null) throw new UserNotFoundException();
         if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) throw new RefreshTokenExpiresIsOldException();
         return _token.CreateUserToken(user);
     }
@@ -64,7 +78,7 @@ public class AppUserService : IAppUserService
     {
         if (string.IsNullOrWhiteSpace(_userId)) throw new ArgumentNullException();
         var user = await _user.FindByIdAsync(_userId);
-        if(user == null) throw new UserNotFoundException();
+        if (user == null) throw new UserNotFoundException();
 
         if (await _user.Users.AnyAsync(u => u.UserName == dto.UserName && u.Id != _userId || u.Email == dto.Email && u.Id != _userId))
             throw new UserIsExistException();

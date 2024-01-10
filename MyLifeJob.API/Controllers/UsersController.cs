@@ -7,6 +7,7 @@ using MyLifeJob.Business.ExternalServices.Interfaces;
 using MyLifeJob.Business.Services.Interfaces;
 using MyLifeJob.Core.Entity;
 using MyLifeJob.DAL.Contexts;
+using System.Security.Claims;
 
 namespace MyLifeJob.API.Controllers;
 
@@ -18,14 +19,19 @@ public class UsersController : ControllerBase
     readonly UserManager<AppUser> _userManager;
     readonly IEmailService _email;
     readonly AppDbContext _context;
+    readonly IHttpContextAccessor _accessor;
+    readonly string? _userId;
 
 
-    public UsersController(IAppUserService service, UserManager<AppUser> userManager, IEmailService email, AppDbContext context)
+    public UsersController(IAppUserService service, UserManager<AppUser> userManager, IEmailService email, AppDbContext context,
+        IHttpContextAccessor accessor)
     {
         _service = service;
         _userManager = userManager;
         _email = email;
         _context = context;
+        _accessor = accessor;
+        _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
 
     [HttpPost("[action]")]
@@ -101,9 +107,48 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> LoginWithRefreshToken([FromForm]string token)
+    public async Task<IActionResult> LoginWithRefreshToken([FromForm] string token)
     {
         return Ok(await _service.LoginWithRefreshToken(token));
     }
 
+    [HttpPut("[action]")]
+    public async Task<IActionResult> UpdateProfile([FromForm] UpdateUserDto dto)
+    {
+        var email = await _userManager.Users.AnyAsync(u => u.Email == dto.Email);
+        if (string.IsNullOrWhiteSpace(_userId)) throw new ArgumentNullException();
+        var users = await _userManager.FindByIdAsync(_userId);
+        if (users == null) throw new UserNotFoundException();
+        if (!email)
+        {
+            users.EmailConfirmed = false;
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(users);
+            var confirmationLink = Url.Action("ConfirmEmail", "Users", new { token, email = dto.Email }, Request.Scheme);
+            var emailToken = await _context.EmailTokens.SingleOrDefaultAsync(u => u.UserId == users.Id);
+
+            emailToken.Token = token;
+            emailToken.Date = DateTime.UtcNow.AddHours(4);
+
+            await _context.SaveChangesAsync();
+
+            string emailContentTemplate = _email.GetEmailConfirmationTemplate("EmailConfirm.html");
+
+            string emailContent = emailContentTemplate.Replace("{USERNAME}", users.UserName).Replace("{CONFIRMATION_LINK}",
+                confirmationLink);
+
+            var message = new Message(new string[] { dto.Email! }, "Confirmation email link", emailContent);
+            _email.SendEmail(message);
+        }
+        await _service.UpdateAsync(dto);
+        return Ok();
+    }
+
+    [HttpPut("[action]")]
+    public async Task<IActionResult> ChangePassword([FromForm] UpdateUserPasswordDto dto)
+    {
+        await _service.ChangePassword(dto);
+        return Ok();
+    }
+
 }
+

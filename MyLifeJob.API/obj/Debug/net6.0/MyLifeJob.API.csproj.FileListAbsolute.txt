@@ -88,3 +88,6 @@ C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\NETCore.MailKit
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\BouncyCastle.Crypto.dll
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\MyLifeJob.API.staticwebassets.runtime.json
 C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\hp\Desktop\MyLifeJob_API\MyLifeJob.API\bin\Debug\net6.0\Newtonsoft.Json.dll
