@@ -10,4 +10,10 @@ public interface IAppUserService
     Task<TokenResponseDto> LoginWithRefreshToken(string refreshToken);
     Task UpdateAsync(UpdateUserDto dto);
     Task ChangePassword(UpdateUserPasswordDto dto);
+    Task<ICollection<ListItemUserDto>> GetAllAsync(bool takeAll);
+    Task<SingleUserItemDto> GetByIdAsync(string id, bool takeAll);
+    Task SoftDeleteAsync(string id);
+    Task RevertSoftDelete(string id);
+    Task DeleteAsync(string id);
+    Task LogOut();
 }

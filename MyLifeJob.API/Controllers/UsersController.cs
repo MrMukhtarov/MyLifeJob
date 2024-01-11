@@ -150,5 +150,37 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAll()
+    {
+        return Ok(await _service.GetAllAsync(true));
+    }
+
+    [HttpGet("[action]/{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        return Ok(await _service.GetByIdAsync(id, true));
+    }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<IActionResult> SoftDelete(string id)
+    {
+        await _service.SoftDeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<IActionResult> RevertSoftDelete(string id)
+    {
+        await _service.RevertSoftDelete(id);
+        return Ok();
+    }
+
+    [HttpDelete("[action]/{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await _service.DeleteAsync(id);
+        return Ok();
+    }
 }
 

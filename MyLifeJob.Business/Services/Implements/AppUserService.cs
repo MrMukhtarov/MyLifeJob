@@ -19,15 +19,17 @@ public class AppUserService : IAppUserService
     readonly ITokenService _token;
     readonly IHttpContextAccessor _accessor;
     readonly string? _userId;
+    readonly SignInManager<AppUser> _sign;
 
     public AppUserService(UserManager<AppUser> user, IMapper mapper, ITokenService token, IHttpContextAccessor accessor
-        )
+, SignInManager<AppUser> sign)
     {
         _user = user;
         _mapper = mapper;
         _token = token;
         _accessor = accessor;
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _sign = sign;
     }
 
     public async Task ChangePassword(UpdateUserPasswordDto dto)
@@ -41,6 +43,46 @@ public class AppUserService : IAppUserService
 
         var changePassword = await _user.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
         if (!changePassword.Succeeded) throw new UpdatePasswordInvalidException();
+    }
+
+    public async Task DeleteAsync(string id)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentNullException();
+        var user = await _user.FindByIdAsync(id);
+        if (user == null) throw new UserNotFoundException();
+        var res = await _user.DeleteAsync(user);
+        if (!res.Succeeded) throw new UserDeleteInvalidException();
+    }
+
+    public async Task<ICollection<ListItemUserDto>> GetAllAsync(bool takeAll)
+    {
+        var users = await _user.Users.ToListAsync();
+        if (takeAll == true)
+        {
+            return _mapper.Map<ICollection<ListItemUserDto>>(users);
+        }
+        else
+        {
+            var filteredUsers = users.Select(u => u.IsDeleted == false);
+            return _mapper.Map<ICollection<ListItemUserDto>>(filteredUsers);
+        }
+    }
+
+    public async Task<SingleUserItemDto> GetByIdAsync(string id, bool takeAll)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentException();
+        if (takeAll == true)
+        {
+            var user = await _user.FindByIdAsync(id);
+            if (user == null) throw new UserNotFoundException();
+            return _mapper.Map<SingleUserItemDto>(user);
+        }
+        else
+        {
+            var user = await _user.Users.SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+            if (user == null) throw new UserNotFoundException();
+            return _mapper.Map<SingleUserItemDto>(user);
+        }
     }
 
     public async Task<TokenResponseDto> Login(LoginDto dto)
@@ -62,6 +104,17 @@ public class AppUserService : IAppUserService
         return _token.CreateUserToken(user);
     }
 
+    public async Task LogOut()
+    {
+        await _sign.SignOutAsync();
+        if (string.IsNullOrEmpty(_userId)) throw new ArgumentNullException();
+        var user = await _user.FindByIdAsync(_userId);
+        if (user == null) throw new UserNotFoundException();
+        user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
+        await _user.UpdateAsync(user);
+    }
+
     public async Task Register(RegisterDto dto)
     {
         if (await _user.Users.AnyAsync(u => u.Email == dto.Email)) throw new EmailAlreadyExistException();
@@ -72,6 +125,24 @@ public class AppUserService : IAppUserService
 
         var res = await _user.CreateAsync(user, dto.Password);
         if (!res.Succeeded) throw new RegisterFailedException();
+    }
+
+    public async Task RevertSoftDelete(string id)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentNullException();
+        var user = await _user.FindByIdAsync(id);
+        if (user == null) throw new UserNotFoundException();
+        user.IsDeleted = false;
+        await _user.UpdateAsync(user);
+    }
+
+    public async Task SoftDeleteAsync(string id)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentNullException();
+        var user = await _user.FindByIdAsync(id);
+        if (user == null) throw new UserNotFoundException();
+        user.IsDeleted = true;
+        await _user.UpdateAsync(user);
     }
 
     public async Task UpdateAsync(UpdateUserDto dto)
