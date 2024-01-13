@@ -182,5 +182,19 @@ public class UsersController : ControllerBase
         await _service.DeleteAsync(id);
         return Ok();
     }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> LogOut()
+    {
+        await _service.LogOut();
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
+    {
+        await _service.AddRoleAsync(dto);
+        return Ok();
+    }
 }
 

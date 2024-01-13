@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyLifeJob.Business.Dtos.TokenDtos;
 using MyLifeJob.Business.Dtos.UserDtos;
+using MyLifeJob.Business.Exceptions.Role;
 using MyLifeJob.Business.Exceptions.User;
 using MyLifeJob.Business.ExternalServices.Interfaces;
 using MyLifeJob.Business.Services.Interfaces;
@@ -20,9 +21,10 @@ public class AppUserService : IAppUserService
     readonly IHttpContextAccessor _accessor;
     readonly string? _userId;
     readonly SignInManager<AppUser> _sign;
+    readonly RoleManager<IdentityRole> _role;
 
     public AppUserService(UserManager<AppUser> user, IMapper mapper, ITokenService token, IHttpContextAccessor accessor
-, SignInManager<AppUser> sign)
+, SignInManager<AppUser> sign, RoleManager<IdentityRole> role)
     {
         _user = user;
         _mapper = mapper;
@@ -30,6 +32,21 @@ public class AppUserService : IAppUserService
         _accessor = accessor;
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _sign = sign;
+        _role = role;
+    }
+
+    public async Task AddRoleAsync(AddRoleDto dto)
+    {
+        if (string.IsNullOrEmpty(dto.UserId)) throw new ArgumentException("User Id");
+        var user = await _user.FindByIdAsync(dto.UserId);
+        if (user == null) throw new UserNotFoundException();
+
+        if (string.IsNullOrEmpty(dto.RoleName)) throw new ArgumentException("Role Name");
+        var role = await _role.FindByNameAsync(dto.RoleName);
+        if (role == null) throw new RoleNotFoundException();
+
+        var res = await _user.AddToRoleAsync(user, dto.RoleName);
+        if (!res.Succeeded) throw new AddRoleFailedException();
     }
 
     public async Task ChangePassword(UpdateUserPasswordDto dto)
@@ -54,35 +71,59 @@ public class AppUserService : IAppUserService
         if (!res.Succeeded) throw new UserDeleteInvalidException();
     }
 
-    public async Task<ICollection<ListItemUserDto>> GetAllAsync(bool takeAll)
+    public async Task<ICollection<UserWithRolesDto>> GetAllAsync(bool takeAll)
     {
-        var users = await _user.Users.ToListAsync();
+        ICollection<UserWithRolesDto> users = new List<UserWithRolesDto>();
         if (takeAll == true)
         {
-            return _mapper.Map<ICollection<ListItemUserDto>>(users);
+            foreach (var item in await _user.Users.ToListAsync())
+            {
+                users.Add(new UserWithRolesDto
+                {
+                    User = _mapper.Map<ListItemUserDto>(item),
+                    Roles = await _user.GetRolesAsync(item),
+                });
+            }
         }
         else
         {
-            var filteredUsers = users.Select(u => u.IsDeleted == false);
-            return _mapper.Map<ICollection<ListItemUserDto>>(filteredUsers);
+            foreach (var item in await _user.Users.Where(u => u.IsDeleted == false).ToListAsync())
+            {
+                users.Add(new UserWithRolesDto
+                {
+                    User = _mapper.Map<ListItemUserDto>(item),
+                    Roles = await _user.GetRolesAsync(item),
+                });
+            }
         }
+        return users;
     }
 
-    public async Task<SingleUserItemDto> GetByIdAsync(string id, bool takeAll)
+    public async Task<UserWithRole> GetByIdAsync(string id, bool takeAll)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentException();
+        UserWithRole user = new UserWithRole();
         if (takeAll == true)
         {
-            var user = await _user.FindByIdAsync(id);
-            if (user == null) throw new UserNotFoundException();
-            return _mapper.Map<SingleUserItemDto>(user);
+            var user1 = await _user.FindByIdAsync(id);
+            if (user1 == null) throw new UserNotFoundException();
+            user = new UserWithRole
+            {
+                User = _mapper.Map<SingleUserItemDto>(user1),
+                Roles = await _user.GetRolesAsync(user1),
+            };
         }
         else
         {
-            var user = await _user.Users.SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
-            if (user == null) throw new UserNotFoundException();
-            return _mapper.Map<SingleUserItemDto>(user);
+            var user1 = await _user.Users.SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+            if (user1 == null) throw new UserNotFoundException();
+            user = new UserWithRole
+            {
+                User = _mapper.Map<SingleUserItemDto>(user1),
+                Roles = await _user.GetRolesAsync(user1),
+            };
         }
+        return user;
     }
 
     public async Task<TokenResponseDto> Login(LoginDto dto)
@@ -112,7 +153,8 @@ public class AppUserService : IAppUserService
         if (user == null) throw new UserNotFoundException();
         user.RefreshToken = null;
         user.RefreshTokenExpiresDate = null;
-        await _user.UpdateAsync(user);
+        var res = await _user.UpdateAsync(user);
+        if (!res.Succeeded) throw new LogOutFailedException();
     }
 
     public async Task Register(RegisterDto dto)
