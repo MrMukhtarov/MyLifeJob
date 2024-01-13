@@ -196,5 +196,12 @@ public class UsersController : ControllerBase
         await _service.AddRoleAsync(dto);
         return Ok();
     }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> RemoveRole([FromForm]RemoveRoleDto dto)
+    {
+        await _service.RemoveRoleAsync(dto);
+        return Ok();
+    }
 }
 

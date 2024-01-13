@@ -17,4 +17,5 @@ public interface IAppUserService
     Task DeleteAsync(string id);
     Task LogOut();
     Task AddRoleAsync(AddRoleDto dto);
+    Task RemoveRoleAsync(RemoveRoleDto dto);
 }

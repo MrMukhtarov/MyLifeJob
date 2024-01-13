@@ -169,6 +169,26 @@ public class AppUserService : IAppUserService
         if (!res.Succeeded) throw new RegisterFailedException();
     }
 
+    public async Task RemoveRoleAsync(RemoveRoleDto dto)
+    {
+        if (string.IsNullOrEmpty(dto.UserId)) throw new ArgumentNullException();
+        var user = await _user.FindByIdAsync(dto.UserId);
+        if (user == null) throw new UserNotFoundException();
+
+        if (string.IsNullOrEmpty(dto.RoleName)) throw new ArgumentException();
+        var role = await _role.FindByNameAsync(dto.RoleName);
+        if (role == null) throw new RoleNotFoundException();
+
+        var userRoles = await _user.GetRolesAsync(user);
+        foreach (var item in userRoles)
+        {
+            if (role.ToString() != item) throw new UserDoesNotHaveThisRoleException();
+        }
+
+        var res = await _user.RemoveFromRoleAsync(user, role.Name);
+        if (!res.Succeeded) throw new RemoveRoleFailedException();
+    }
+
     public async Task RevertSoftDelete(string id)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentNullException();
