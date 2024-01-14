@@ -1,18 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using MyLifeJob.Business.Profiles;
-using MyLifeJob.DAL.Contexts;
-using MyLifeJob.Business;
-using MyLifeJob.Business.Services.Implements;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Identity;
-using MyLifeJob.Core.Entity;
-using MyLifeJob.API.Helpers;
-using MyLifeJob.Business.ExternalServices.Interfaces;
-using MyLifeJob.Business.ExternalServices.Implements;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
+using MyLifeJob.Business;
+using MyLifeJob.Business.ExternalServices.Implements;
+using MyLifeJob.Business.ExternalServices.Interfaces;
+using MyLifeJob.Business.Profiles;
+using MyLifeJob.Business.Services.Implements;
+using MyLifeJob.Core.Entity;
+using MyLifeJob.DAL.Contexts;
+using System.Text;
+using MyLifeJob.Business.Constants;
+using MyLifeJob.DAL;
 
 namespace MyLifeJob.API
 {
@@ -67,6 +68,7 @@ namespace MyLifeJob.API
             builder.Services.AddAutoMapper(typeof(UserMappingProfiles).Assembly);
 
             builder.Services.AddService();
+            builder.Services.AddRepository();
 
             builder.Services.AddFluentValidation(res =>
             {
@@ -130,6 +132,8 @@ namespace MyLifeJob.API
             //app.UseCustomExceptionHandler();
 
             app.MapControllers();
+
+            RootContsant.Root = builder.Environment.WebRootPath;
 
             app.Run();
         }
