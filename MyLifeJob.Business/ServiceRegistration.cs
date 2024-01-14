@@ -13,5 +13,7 @@ public static class ServiceRegistration
         services.AddScoped<IAppUserService, AppUserService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IIndustiryService, IndustryService>();
+        services.AddScoped<IFileService, FileService>();
     }
 }

@@ -5,6 +5,22 @@
       "PackagePath": "staticwebassets\\EmailConfirm.html"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\686db4f9-33e6-4ce2-8c3d-080a8feece32.png",
+      "PackagePath": "staticwebassets\\Imgs\\Industiry\\686db4f9-33e6-4ce2-8c3d-080a8feece32.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\bc6ebb9e-371c-4c01-af27-db6b4e9ea014.png",
+      "PackagePath": "staticwebassets\\Imgs\\Industiry\\bc6ebb9e-371c-4c01-af27-db6b4e9ea014.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\ce8deffd-fdc5-4073-b10a-235b22e24703.png",
+      "PackagePath": "staticwebassets\\Imgs\\Industiry\\ce8deffd-fdc5-4073-b10a-235b22e24703.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\e84d825e-470b-4966-ac01-a84a292efa64.png",
+      "PackagePath": "staticwebassets\\Imgs\\Industiry\\e84d825e-470b-4966-ac01-a84a292efa64.png"
+    },
+    {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.MyLifeJob.API.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
