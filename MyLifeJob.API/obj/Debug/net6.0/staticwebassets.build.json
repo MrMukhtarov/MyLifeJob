@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "x8LqvNHUmtrXHUS0HRpnKInnkDb+YzSQroZSIRtqxyo=",
+  "Hash": "3dz94y/coi3zgdOJFXJ2d0YLQ5rDW/VxLdabX3++Glg=",
   "Source": "MyLifeJob.API",
   "BasePath": "_content/MyLifeJob.API",
   "Mode": "Default",
@@ -49,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\686db4f9-33e6-4ce2-8c3d-080a8feece32.png"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png",
+      "SourceId": "MyLifeJob.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
+      "BasePath": "_content/MyLifeJob.API",
+      "RelativePath": "Imgs/Industiry/7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png"
     },
     {
       "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\bc6ebb9e-371c-4c01-af27-db6b4e9ea014.png",

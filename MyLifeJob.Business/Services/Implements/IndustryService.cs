@@ -40,6 +40,18 @@ public class IndustryService : IIndustiryService
         await _repo.SaveAsync();
     }
 
+    public async Task DeleteAsync(int id)
+    {
+        if (id <= 0) throw new IdIsNegativeException<Industry>();
+        var ind = await _repo.FindByIdAsync(id);
+        if (ind == null) throw new NotFoundException<Industry>();
+
+        _file.Delete(ind.Logo);
+
+        await _repo.DeleteAsync(id);
+        await _repo.SaveAsync();
+    }
+
     public async Task<ICollection<IndustryListItemDto>> GetAllAsync(bool takeAll)
     {
         var data = await _repo.GetAllAsync().ToListAsync();
@@ -69,6 +81,24 @@ public class IndustryService : IIndustiryService
             if (ind.IsDeleted == true) throw new NotFoundException<Industry>();
             return _mapper.Map<IndustryDetailDto>(ind);
         }
+    }
+
+    public async Task RevertSoftDeleteAsync(int id)
+    {
+        if (id <= 0) throw new IdIsNegativeException<Industry>();
+        var ind = await _repo.FindByIdAsync(id);
+        if (ind == null) throw new NotFoundException<Industry>();
+        ind.IsDeleted = false;
+        await _repo.SaveAsync();
+    }
+
+    public async Task SoftDeleteAsync(int id)
+    {
+        if (id <= 0) throw new IdIsNegativeException<Industry>();
+        var ind = await _repo.FindByIdAsync(id);
+        if (ind == null) throw new NotFoundException<Industry>();
+        ind.IsDeleted = true;
+        await _repo.SaveAsync();
     }
 
     public async Task UpdateAsync(int id, IndustryUpdateDto dto)

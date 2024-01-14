@@ -8,4 +8,7 @@ public interface IIndustiryService
     Task<ICollection<IndustryListItemDto>> GetAllAsync(bool takeAll);
     Task<IndustryDetailDto> GetByIdAsync(int id, bool takeAll);
     Task UpdateAsync(int id, IndustryUpdateDto dto);
+    Task DeleteAsync(int id);
+    Task SoftDeleteAsync(int id);
+    Task RevertSoftDeleteAsync(int id);
 }

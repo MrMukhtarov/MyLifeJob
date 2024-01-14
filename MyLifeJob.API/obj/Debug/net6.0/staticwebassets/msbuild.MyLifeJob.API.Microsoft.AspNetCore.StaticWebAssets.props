@@ -32,6 +32,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Imgs\Industiry\686db4f9-33e6-4ce2-8c3d-080a8feece32.png))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Imgs\Industiry\7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>MyLifeJob.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MyLifeJob.API</BasePath>
+      <RelativePath>Imgs/Industiry/7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Imgs\Industiry\7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Imgs\Industiry\bc6ebb9e-371c-4c01-af27-db6b4e9ea014.png))">
       <SourceType>Package</SourceType>
       <SourceId>MyLifeJob.API</SourceId>
