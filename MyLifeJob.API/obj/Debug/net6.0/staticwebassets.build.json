@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3dz94y/coi3zgdOJFXJ2d0YLQ5rDW/VxLdabX3++Glg=",
+  "Hash": "lMjT9VbLtjhcaqHkvo3eVYYTAxnk8owp2j9iIXTTB2c=",
   "Source": "MyLifeJob.API",
   "BasePath": "_content/MyLifeJob.API",
   "Mode": "Default",
@@ -34,12 +34,12 @@
       "OriginalItemSpec": "wwwroot\\EmailConfirm.html"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\686db4f9-33e6-4ce2-8c3d-080a8feece32.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\60182069-7704-48fe-8d7c-6d85ccc8211f.png",
       "SourceId": "MyLifeJob.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
       "BasePath": "_content/MyLifeJob.API",
-      "RelativePath": "Imgs/Industiry/686db4f9-33e6-4ce2-8c3d-080a8feece32.png",
+      "RelativePath": "Imgs/Company/60182069-7704-48fe-8d7c-6d85ccc8211f.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -48,15 +48,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\686db4f9-33e6-4ce2-8c3d-080a8feece32.png"
+      "OriginalItemSpec": "wwwroot\\Imgs\\Company\\60182069-7704-48fe-8d7c-6d85ccc8211f.png"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\74261089-4dff-402a-bcf1-e2798e4d36af.png",
       "SourceId": "MyLifeJob.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
       "BasePath": "_content/MyLifeJob.API",
-      "RelativePath": "Imgs/Industiry/7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png",
+      "RelativePath": "Imgs/Company/74261089-4dff-402a-bcf1-e2798e4d36af.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -65,15 +65,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\7cfef0e6-9f7e-4bfe-a656-943b2fc3b2fd.png"
+      "OriginalItemSpec": "wwwroot\\Imgs\\Company\\74261089-4dff-402a-bcf1-e2798e4d36af.png"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\bc6ebb9e-371c-4c01-af27-db6b4e9ea014.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\834063b1-bdb7-4b11-9274-5ef0f244deaa.png",
       "SourceId": "MyLifeJob.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
       "BasePath": "_content/MyLifeJob.API",
-      "RelativePath": "Imgs/Industiry/bc6ebb9e-371c-4c01-af27-db6b4e9ea014.png",
+      "RelativePath": "Imgs/Company/834063b1-bdb7-4b11-9274-5ef0f244deaa.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -82,15 +82,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\bc6ebb9e-371c-4c01-af27-db6b4e9ea014.png"
+      "OriginalItemSpec": "wwwroot\\Imgs\\Company\\834063b1-bdb7-4b11-9274-5ef0f244deaa.png"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\ce8deffd-fdc5-4073-b10a-235b22e24703.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\f5f165e7-c012-458d-9f13-264ad6e2a266.png",
       "SourceId": "MyLifeJob.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
       "BasePath": "_content/MyLifeJob.API",
-      "RelativePath": "Imgs/Industiry/ce8deffd-fdc5-4073-b10a-235b22e24703.png",
+      "RelativePath": "Imgs/Company/f5f165e7-c012-458d-9f13-264ad6e2a266.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -99,15 +99,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\ce8deffd-fdc5-4073-b10a-235b22e24703.png"
+      "OriginalItemSpec": "wwwroot\\Imgs\\Company\\f5f165e7-c012-458d-9f13-264ad6e2a266.png"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\e84d825e-470b-4966-ac01-a84a292efa64.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\fc223752-0519-4384-8d08-1c7b0666973b.png",
       "SourceId": "MyLifeJob.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
       "BasePath": "_content/MyLifeJob.API",
-      "RelativePath": "Imgs/Industiry/e84d825e-470b-4966-ac01-a84a292efa64.png",
+      "RelativePath": "Imgs/Company/fc223752-0519-4384-8d08-1c7b0666973b.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -116,7 +116,41 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\e84d825e-470b-4966-ac01-a84a292efa64.png"
+      "OriginalItemSpec": "wwwroot\\Imgs\\Company\\fc223752-0519-4384-8d08-1c7b0666973b.png"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\61a3f9bd-f0ff-4cbb-ac77-ff6a12d282fa.png",
+      "SourceId": "MyLifeJob.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
+      "BasePath": "_content/MyLifeJob.API",
+      "RelativePath": "Imgs/Industiry/61a3f9bd-f0ff-4cbb-ac77-ff6a12d282fa.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\61a3f9bd-f0ff-4cbb-ac77-ff6a12d282fa.png"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\7f61ff2d-7b4e-41b3-bf31-4799d75f0afa.png",
+      "SourceId": "MyLifeJob.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
+      "BasePath": "_content/MyLifeJob.API",
+      "RelativePath": "Imgs/Industiry/7f61ff2d-7b4e-41b3-bf31-4799d75f0afa.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Imgs\\Industiry\\7f61ff2d-7b4e-41b3-bf31-4799d75f0afa.png"
     }
   ]
 }

@@ -237,6 +237,79 @@ namespace MyLifeJob.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(hour,4,GETUTCDATE())");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("MyLifeJob.Core.Entity.CompanyIndustry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IndustryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("IndustryId");
+
+                    b.ToTable("CompanyIndustries");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.EmailToken", b =>
                 {
                     b.Property<int>("Id")
@@ -342,6 +415,25 @@ namespace MyLifeJob.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.CompanyIndustry", b =>
+                {
+                    b.HasOne("MyLifeJob.Core.Entity.Company", "Company")
+                        .WithMany("CompanyIndustries")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MyLifeJob.Core.Entity.Industry", "Industry")
+                        .WithMany("CompanyIndustries")
+                        .HasForeignKey("IndustryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Industry");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.EmailToken", b =>
                 {
                     b.HasOne("MyLifeJob.Core.Entity.AppUser", "User")
@@ -356,6 +448,16 @@ namespace MyLifeJob.DAL.Migrations
             modelBuilder.Entity("MyLifeJob.Core.Entity.AppUser", b =>
                 {
                     b.Navigation("EmailToken");
+                });
+
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Company", b =>
+                {
+                    b.Navigation("CompanyIndustries");
+                });
+
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Industry", b =>
+                {
+                    b.Navigation("CompanyIndustries");
                 });
 #pragma warning restore 612, 618
         }
