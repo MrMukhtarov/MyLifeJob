@@ -10,11 +10,9 @@ public class CompanyIndustryConfiguration : IEntityTypeConfiguration<CompanyIndu
     {
         builder.HasOne(c => c.Company)
             .WithMany(c => c.CompanyIndustries)
-            .HasForeignKey(c => c.CompanyId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(c => c.CompanyId);
         builder.HasOne(c => c.Industry)
             .WithMany(c => c.CompanyIndustries)
-            .HasForeignKey(c => c.IndustryId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(c => c.IndustryId);
     }
 }
