@@ -1,4 +1,6 @@
-﻿namespace MyLifeJob.Business.Dtos.UserDtos;
+﻿using MyLifeJob.Business.Dtos.CompanyDtos;
+
+namespace MyLifeJob.Business.Dtos.UserDtos;
 
 public record SingleUserItemDto
 {
@@ -8,4 +10,6 @@ public record SingleUserItemDto
     public string UserName { get; set; }
     public string Email { get; set; }
     public string IsDeleted { get; set; }
+    public CompanyIndustrySingleItemDto Company { get; set; }
+
 }

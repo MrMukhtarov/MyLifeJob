@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
 using MyLifeJob.Business.Dtos.TokenDtos;
 using MyLifeJob.Business.Dtos.UserDtos;
 using MyLifeJob.Business.Exceptions.Role;
@@ -76,7 +77,7 @@ public class AppUserService : IAppUserService
         ICollection<UserWithRolesDto> users = new List<UserWithRolesDto>();
         if (takeAll == true)
         {
-            foreach (var item in await _user.Users.ToListAsync())
+            foreach (var item in await _user.Users.Include(u => u.Company).ToListAsync())
             {
                 users.Add(new UserWithRolesDto
                 {
@@ -87,7 +88,7 @@ public class AppUserService : IAppUserService
         }
         else
         {
-            foreach (var item in await _user.Users.Where(u => u.IsDeleted == false).ToListAsync())
+            foreach (var item in await _user.Users.Include(u => u.Company).Where(u => u.IsDeleted == false).ToListAsync())
             {
                 users.Add(new UserWithRolesDto
                 {
@@ -105,7 +106,7 @@ public class AppUserService : IAppUserService
         UserWithRole user = new UserWithRole();
         if (takeAll == true)
         {
-            var user1 = await _user.FindByIdAsync(id);
+            var user1 = await _user.Users.Include(u => u.Company).SingleOrDefaultAsync(u => u.Id == id);
             if (user1 == null) throw new UserNotFoundException();
             user = new UserWithRole
             {
@@ -115,7 +116,7 @@ public class AppUserService : IAppUserService
         }
         else
         {
-            var user1 = await _user.Users.SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+            var user1 = await _user.Users.Include(u => u.Company).SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
             if (user1 == null) throw new UserNotFoundException();
             user = new UserWithRole
             {

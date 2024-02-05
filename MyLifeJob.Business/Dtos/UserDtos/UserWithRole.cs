@@ -1,4 +1,6 @@
-﻿namespace MyLifeJob.Business.Dtos.UserDtos;
+﻿using MyLifeJob.Business.Dtos.CompanyDtos;
+
+namespace MyLifeJob.Business.Dtos.UserDtos;
 
 public record UserWithRole
 {

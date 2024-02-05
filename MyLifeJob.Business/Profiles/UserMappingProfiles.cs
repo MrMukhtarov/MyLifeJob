@@ -12,5 +12,6 @@ public class UserMappingProfiles : Profile
         CreateMap<UpdateUserDto, AppUser>();
         CreateMap<AppUser, ListItemUserDto>().ReverseMap();
         CreateMap<AppUser, SingleUserItemDto>().ReverseMap();
+        CreateMap<AppUser, UserForCompanyDtos>().ReverseMap();
     }
 }

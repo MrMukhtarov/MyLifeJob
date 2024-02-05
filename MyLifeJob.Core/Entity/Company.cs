@@ -13,4 +13,6 @@ public class Company : BaseEntity
     public string Description { get; set; }
     public DateTime Date { get; set; }
     public ICollection<CompanyIndustry> CompanyIndustries { get; set; }
+    public AppUser AppUser { get; set; }
+    public string AppUserId { get; set; }
 }

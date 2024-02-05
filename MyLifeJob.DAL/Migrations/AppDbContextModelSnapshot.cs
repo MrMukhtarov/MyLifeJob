@@ -245,6 +245,10 @@ namespace MyLifeJob.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -280,6 +284,9 @@ namespace MyLifeJob.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique();
 
                     b.ToTable("Companies");
                 });
@@ -415,6 +422,17 @@ namespace MyLifeJob.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Company", b =>
+                {
+                    b.HasOne("MyLifeJob.Core.Entity.AppUser", "AppUser")
+                        .WithOne("Company")
+                        .HasForeignKey("MyLifeJob.Core.Entity.Company", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.CompanyIndustry", b =>
                 {
                     b.HasOne("MyLifeJob.Core.Entity.Company", "Company")
@@ -447,6 +465,8 @@ namespace MyLifeJob.DAL.Migrations
 
             modelBuilder.Entity("MyLifeJob.Core.Entity.AppUser", b =>
                 {
+                    b.Navigation("Company");
+
                     b.Navigation("EmailToken");
                 });
 

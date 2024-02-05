@@ -1,4 +1,5 @@
-﻿using MyLifeJob.Core.Entity;
+﻿using MyLifeJob.Business.Dtos.UserDtos;
+using MyLifeJob.Core.Entity;
 
 namespace MyLifeJob.Business.Dtos.CompanyDtos;
 
@@ -15,4 +16,5 @@ public record CompanyListItemDto
     public bool IsDeleted { get; set; }
     public DateTime Date { get; set; }
     public IEnumerable<CompanyIndustryDto> CompanyIndustries { get; set; }
+    public UserForCompanyDtos AppUser { get; set; }
 }

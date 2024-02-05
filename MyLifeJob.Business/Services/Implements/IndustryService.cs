@@ -43,10 +43,12 @@ public class IndustryService : IIndustiryService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Industry>();
-        var ind = await _repo.FindByIdAsync(id);
+        var ind = await _repo.FindByIdAsync(id, "CompanyIndustries", "CompanyIndustries.Company");
         if (ind == null) throw new NotFoundException<Industry>();
 
         _file.Delete(ind.Logo);
+
+        if (ind.CompanyIndustries.Count > 0) throw new IndustryCompaniesNotEmptyException();
 
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
@@ -54,14 +56,14 @@ public class IndustryService : IIndustiryService
 
     public async Task<ICollection<IndustryListItemDto>> GetAllAsync(bool takeAll)
     {
-        var data = await _repo.GetAllAsync().ToListAsync();
+        var data = _repo.GetAllAsync("CompanyIndustries", "CompanyIndustries.Company");
         if (takeAll == true)
         {
             return _mapper.Map<ICollection<IndustryListItemDto>>(data);
         }
         else
         {
-            var filteredData = data.Where(i => i.IsDeleted == false).ToList();
+            var filteredData = data.Where(i => i.IsDeleted == false);
             return _mapper.Map<ICollection<IndustryListItemDto>>(filteredData);
         }
     }
@@ -69,7 +71,7 @@ public class IndustryService : IIndustiryService
     public async Task<IndustryDetailDto> GetByIdAsync(int id, bool takeAll)
     {
         if (id <= 0) throw new IdIsNegativeException<Industry>();
-        var ind = await _repo.FindByIdAsync(id);
+        var ind = await _repo.FindByIdAsync(id, "CompanyIndustries", "CompanyIndustries.Company");
         if (ind == null) throw new NotFoundException<Industry>();
 
         if (takeAll == true)

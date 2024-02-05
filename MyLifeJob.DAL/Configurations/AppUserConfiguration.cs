@@ -12,5 +12,9 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
             .IsRequired();
         builder.Property(a => a.Surname)
             .IsRequired();
+        builder.HasOne(a => a.Company)
+            .WithOne(a => a.AppUser)
+            .HasForeignKey<Company>(a => a.AppUserId)
+            .IsRequired();
     }
 }

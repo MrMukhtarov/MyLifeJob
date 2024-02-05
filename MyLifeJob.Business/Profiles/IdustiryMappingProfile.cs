@@ -12,5 +12,7 @@ public class IdustiryMappingProfile : Profile
         CreateMap<IndustryUpdateDto, Industry>().ReverseMap();
         CreateMap<Industry, IndustryListItemDto>().ReverseMap();
         CreateMap<Industry, IndustryDetailDto>().ReverseMap();
+        CreateMap<Industry, IndustryCompanySingleItemDto>().ReverseMap();
+        CreateMap<IndustryCompanyDto, CompanyIndustry>().ReverseMap();
     }
 }
