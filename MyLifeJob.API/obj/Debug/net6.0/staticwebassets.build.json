@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CJYgeJrACP82AIhoU+bSunJX1fI7tzjPZ5QmGGw92Og=",
+  "Hash": "HFqgPbyYX37ptI4oEomCQfnb1l66aaI52aADMifVkc8=",
   "Source": "MyLifeJob.API",
   "BasePath": "_content/MyLifeJob.API",
   "Mode": "Default",
@@ -32,6 +32,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\EmailConfirm.html"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Category\\aa1592e4-f878-45d5-b9be-f27d25228fab.png",
+      "SourceId": "MyLifeJob.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\",
+      "BasePath": "_content/MyLifeJob.API",
+      "RelativePath": "Imgs/Category/aa1592e4-f878-45d5-b9be-f27d25228fab.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Imgs\\Category\\aa1592e4-f878-45d5-b9be-f27d25228fab.png"
     },
     {
       "Identity": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\01a02904-2caf-4cc9-a76c-7a6e3519900c.png",

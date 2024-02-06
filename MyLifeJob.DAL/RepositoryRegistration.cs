@@ -10,5 +10,6 @@ public static class RepositoryRegistration
     {
         services.AddScoped<IIndustiryRepository, IndustryRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
     }
 }

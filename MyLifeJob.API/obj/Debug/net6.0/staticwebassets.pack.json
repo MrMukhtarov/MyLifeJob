@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\EmailConfirm.html"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Category\\aa1592e4-f878-45d5-b9be-f27d25228fab.png",
+      "PackagePath": "staticwebassets\\Imgs\\Category\\aa1592e4-f878-45d5-b9be-f27d25228fab.png"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\01a02904-2caf-4cc9-a76c-7a6e3519900c.png",
       "PackagePath": "staticwebassets\\Imgs\\Company\\01a02904-2caf-4cc9-a76c-7a6e3519900c.png"
     },

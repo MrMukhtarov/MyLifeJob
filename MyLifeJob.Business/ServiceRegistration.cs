@@ -16,5 +16,6 @@ public static class ServiceRegistration
         services.AddScoped<IIndustiryService, IndustryService>();
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<ICompanyService, CompanyService>();
+        services.AddScoped<ICategoryService, CategoryService>();
     }
 }
