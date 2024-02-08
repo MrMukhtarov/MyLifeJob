@@ -6,4 +6,5 @@ public interface IAdvertismentService
 {
     Task<ICollection<AdvertismentListItemDto>> GetAll(bool takeAll);
     Task CreateAsync(AdvertismentCreateDto dto);
+    Task CheckStatus();
 }

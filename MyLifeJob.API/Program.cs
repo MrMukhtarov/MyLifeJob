@@ -14,6 +14,7 @@ using MyLifeJob.DAL.Contexts;
 using System.Text;
 using MyLifeJob.Business.Constants;
 using MyLifeJob.DAL;
+using Hangfire;
 
 namespace MyLifeJob.API
 {
@@ -26,6 +27,15 @@ namespace MyLifeJob.API
 
             builder.Services.AddControllers().AddNewtonsoftJson(opt =>
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            //Hangfire
+            var hangfireConnectionSTring = builder.Configuration.GetConnectionString("HangfireString");
+            builder.Services.AddHangfire(h =>
+            {
+                h.UseSqlServerStorage(hangfireConnectionSTring);
+                RecurringJob.AddOrUpdate<AdvertismentService>(a => a.CheckStatus(), "0 0 * * *");
+            });
+            builder.Services.AddHangfireServer();
 
             // Add services to the container.
 
@@ -134,6 +144,8 @@ namespace MyLifeJob.API
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseHangfireDashboard();
 
             //app.UseCustomExceptionHandler();
 

@@ -31,6 +31,19 @@ public class AdvertismentService : IAdvertismentService
         _user = user;
     }
 
+    public async Task CheckStatus()
+    {
+        var adv = _repo.GetAllAsync();
+        foreach (var item in adv)
+        {
+            if (item.EndTime < DateTime.Now)
+            {
+                item.Status = Status.Finished;
+            }
+        }
+        await _repo.SaveAsync();
+    }
+
     public async Task CreateAsync(AdvertismentCreateDto dto)
     {
         if (string.IsNullOrEmpty(_userId)) throw new NullReferenceException();
@@ -62,4 +75,3 @@ public class AdvertismentService : IAdvertismentService
         }
     }
 }
-    
