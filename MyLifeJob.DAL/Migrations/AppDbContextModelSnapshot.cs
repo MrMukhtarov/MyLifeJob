@@ -155,6 +155,73 @@ namespace MyLifeJob.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Advertisment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Ability")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(hour,4,GETUTCDATE())");
+
+                    b.Property<string>("Education")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Experience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Requirement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Salary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkGraphic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Advertisments");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -446,6 +513,17 @@ namespace MyLifeJob.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Advertisment", b =>
+                {
+                    b.HasOne("MyLifeJob.Core.Entity.Category", "Category")
+                        .WithMany("Advertisments")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.Company", b =>
                 {
                     b.HasOne("MyLifeJob.Core.Entity.AppUser", "AppUser")
@@ -492,6 +570,11 @@ namespace MyLifeJob.DAL.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("EmailToken");
+                });
+
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Category", b =>
+                {
+                    b.Navigation("Advertisments");
                 });
 
             modelBuilder.Entity("MyLifeJob.Core.Entity.Company", b =>

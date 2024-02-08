@@ -20,4 +20,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Company> Companies { get; set; }
     public DbSet<CompanyIndustry> CompanyIndustries { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Advertisment> Advertisments { get; set; }
 }
