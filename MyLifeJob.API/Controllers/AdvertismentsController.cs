@@ -27,4 +27,38 @@ public class AdvertismentsController : ControllerBase
     {
         return Ok(await _service.GetAll(true));
     }
+
+    [HttpGet("[action]/{id}")]
+    public async Task<IActionResult> Get(int id)
+    {
+        return Ok(await _service.GetByIdAsync(true, id));
+    }
+
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> Update([FromForm] AdvertismentUpdateDto dto, int id)
+    {
+        await _service.UpdateAsync(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<IActionResult> SoftDelete(int id)
+    {
+        await _service.SoftDeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<IActionResult> RevertSoftDelete(int id)
+    {
+        await _service.RevertSoftDeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpDelete("[action]/{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _service.DeleteAsync(id);
+        return Ok();
+    }
 }

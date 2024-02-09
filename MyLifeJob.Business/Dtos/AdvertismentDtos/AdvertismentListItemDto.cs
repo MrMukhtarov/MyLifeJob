@@ -18,5 +18,6 @@ public record AdvertismentListItemDto
     public int ViewCount { get; set; }
     public Status Status { get; set; }
     public DateTime CreateDate { get; set; }
+    public bool IsDeleted { get; set; }
     public int CategoryId { get; set; }
 }

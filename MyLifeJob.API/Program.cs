@@ -34,6 +34,7 @@ namespace MyLifeJob.API
             {
                 h.UseSqlServerStorage(hangfireConnectionSTring);
                 RecurringJob.AddOrUpdate<AdvertismentService>(a => a.CheckStatus(), "0 0 * * *");
+                RecurringJob.AddOrUpdate<AdvertismentService>(a => a.ExpiresDeletion(), "0 0 * * *");
             });
             builder.Services.AddHangfireServer();
 
