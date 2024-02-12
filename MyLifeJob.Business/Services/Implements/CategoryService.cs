@@ -55,11 +55,11 @@ public class CategoryService : ICategoryService
     {
         if (takeAll == true)
         {
-            return _mapper.Map<ICollection<CategoryListItemDto>>(_repo.GetAllAsync());
+            return _mapper.Map<ICollection<CategoryListItemDto>>(_repo.GetAllAsync("Advertisments"));
         }
         else
         {
-            return _mapper.Map<ICollection<CategoryListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false));
+            return _mapper.Map<ICollection<CategoryListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false, "Advertisments"));
         }
     }
 
@@ -68,13 +68,13 @@ public class CategoryService : ICategoryService
         if (id < 0) throw new IdIsNegativeException<Category>();
         if (takeAll == true)
         {
-            var data = await _repo.GetSingleAsync(c => c.Id == id);
+            var data = await _repo.GetSingleAsync(c => c.Id == id, "Advertisments");
             if (data == null) throw new NotFoundException<Category>();
             return _mapper.Map<CategoryDetailItemDto>(data);
         }
         else
         {
-            var data = await _repo.GetSingleAsync(c => c.Id == id && c.IsDeleted == false);
+            var data = await _repo.GetSingleAsync(c => c.Id == id && c.IsDeleted == false, "Advertisments");
             if (data == null) throw new NotFoundException<Category>();
             return _mapper.Map<CategoryDetailItemDto>(data);
 

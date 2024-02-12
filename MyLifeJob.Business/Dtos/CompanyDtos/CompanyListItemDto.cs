@@ -1,4 +1,5 @@
-﻿using MyLifeJob.Business.Dtos.UserDtos;
+﻿using MyLifeJob.Business.Dtos.AdvertismentDtos;
+using MyLifeJob.Business.Dtos.UserDtos;
 using MyLifeJob.Core.Entity;
 
 namespace MyLifeJob.Business.Dtos.CompanyDtos;
@@ -17,4 +18,5 @@ public record CompanyListItemDto
     public DateTime Date { get; set; }
     public IEnumerable<CompanyIndustryDto> CompanyIndustries { get; set; }
     public UserForCompanyDtos AppUser { get; set; }
+    public ICollection<AdvertismentForCategoryDto> Advertisments { get; set; }
 }

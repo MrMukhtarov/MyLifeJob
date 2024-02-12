@@ -173,6 +173,9 @@ namespace MyLifeJob.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -197,6 +200,9 @@ namespace MyLifeJob.DAL.Migrations
                     b.Property<decimal?>("Salary")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -218,6 +224,8 @@ namespace MyLifeJob.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Advertisments");
                 });
@@ -521,7 +529,15 @@ namespace MyLifeJob.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyLifeJob.Core.Entity.Company", "Company")
+                        .WithMany("Advertisments")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("MyLifeJob.Core.Entity.Company", b =>
@@ -579,6 +595,8 @@ namespace MyLifeJob.DAL.Migrations
 
             modelBuilder.Entity("MyLifeJob.Core.Entity.Company", b =>
                 {
+                    b.Navigation("Advertisments");
+
                     b.Navigation("CompanyIndustries");
                 });
 

@@ -20,4 +20,5 @@ public record AdvertismentListItemDto
     public DateTime CreateDate { get; set; }
     public bool IsDeleted { get; set; }
     public int CategoryId { get; set; }
+    public State State { get; set; }
 }

@@ -16,5 +16,6 @@ public class AdvertismentConfiguration : IEntityTypeConfiguration<Advertisment>
         builder.Property(a => a.CreateDate).HasDefaultValueSql("DATEADD(hour,4,GETUTCDATE())");
         builder.Property(a => a.Requirement).IsRequired();
         builder.HasOne(a => a.Category).WithMany(a => a.Advertisments).HasForeignKey(a => a.CategoryId);
+        builder.HasOne(a => a.Company).WithMany(a => a.Advertisments).HasForeignKey(a => a.CompanyId);
     }
 }

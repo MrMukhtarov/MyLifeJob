@@ -12,5 +12,6 @@ public class AdvertismentMappingProfile : Profile
         CreateMap<AdvertismentUpdateDto, Advertisment>().ReverseMap();
         CreateMap<Advertisment, AdvertismentListItemDto>().ReverseMap();
         CreateMap<Advertisment, AdvertismentDetailItemDto>().ReverseMap();
+        CreateMap<Advertisment, AdvertismentForCategoryDto>().ReverseMap();
     }
 }

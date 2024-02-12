@@ -20,4 +20,7 @@ public class Advertisment : BaseEntity
     public DateTime CreateDate { get; set; }
     public Category Category { get; set; }
     public int CategoryId { get; set; }
+    public Company Company { get; set; }
+    public int CompanyId { get; set; }
+    public State State { get; set; }
 }

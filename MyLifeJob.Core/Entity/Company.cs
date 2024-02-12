@@ -15,4 +15,5 @@ public class Company : BaseEntity
     public ICollection<CompanyIndustry> CompanyIndustries { get; set; }
     public AppUser AppUser { get; set; }
     public string AppUserId { get; set; }
+    public ICollection<Advertisment> Advertisments { get; set; }
 }

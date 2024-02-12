@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using MyLifeJob.Business.Exceptions.Advertisment;
+using Microsoft.EntityFrameworkCore;
+using MyLifeJob.Business.Exceptions.User;
 
 namespace MyLifeJob.Business.Services.Implements;
 
@@ -20,9 +22,10 @@ public class AdvertismentService : IAdvertismentService
     readonly string? _userId;
     readonly IHttpContextAccessor _accessor;
     readonly UserManager<AppUser> _user;
+    readonly ICompanyRepository _company;
 
     public AdvertismentService(IAdvertismentRepository repo, IMapper mapper, ICategoryRepository category, IHttpContextAccessor accessor,
-        UserManager<AppUser> user)
+        UserManager<AppUser> user, ICompanyRepository company)
     {
         _repo = repo;
         _mapper = mapper;
@@ -30,6 +33,33 @@ public class AdvertismentService : IAdvertismentService
         _accessor = accessor;
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _user = user;
+        _company = company;
+    }
+
+    public async Task<ICollection<AdvertismentListItemDto>> AcceptGetall()
+    {
+        var entity = _repo.FindAllAsync(a => a.IsDeleted == false && a.State == State.Accept);
+        return _mapper.Map<ICollection<AdvertismentListItemDto>>(entity);
+    }
+
+    public async Task AcceptState(int id)
+    {
+        if (id < 0) throw new IdIsNegativeException<Advertisment>();
+        var adv = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false && a.State == State.Pending);
+        if (adv == null) throw new NotFoundException<Advertisment>();
+
+        adv.State = State.Accept;
+        await _repo.SaveAsync();
+    }
+
+    public async Task ChangeState(int id, State state)
+    {
+        if (id < 0) throw new IdIsNegativeException<Advertisment>();
+        var entity = await _repo.FindByIdAsync(id);
+        if(entity == null) throw new NotFoundException<Advertisment>();
+
+        entity.State = state;
+        await _repo.SaveAsync();
     }
 
     public async Task CheckStatus()
@@ -48,8 +78,12 @@ public class AdvertismentService : IAdvertismentService
     public async Task CreateAsync(AdvertismentCreateDto dto)
     {
         if (string.IsNullOrEmpty(_userId)) throw new NullReferenceException();
-        var user = await _user.FindByIdAsync(_userId);
+        var user = await _user.Users.Include(u => u.Company).FirstOrDefaultAsync(a => a.Id == _userId);
         if (user == null) throw new NotFoundException<AppUser>();
+
+        if (user.Company == null) throw new UserHaventCompanyException();
+        var company = await _company.FindByIdAsync(user.Company.Id);
+        if (company == null) throw new NotFoundException<Company>();
 
         var map = _mapper.Map<Advertisment>(dto);
 
@@ -57,6 +91,8 @@ public class AdvertismentService : IAdvertismentService
         if (cat == null || cat.IsDeleted) throw new NotFoundException<Category>();
         map.CategoryId = cat.Id;
         map.Status = Status.Actice;
+        map.CompanyId = company.Id;
+        map.State = State.Pending;
 
         map.EndTime = DateTime.Now.AddDays(31);
 
@@ -112,6 +148,16 @@ public class AdvertismentService : IAdvertismentService
         }
     }
 
+    public async Task RejectState(int id)
+    {
+        if (id < 0) throw new IdIsNegativeException<Advertisment>();
+        var adv = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false && a.State == State.Pending);
+        if (adv == null) throw new NotFoundException<Advertisment>();
+
+        adv.State = State.Reject;
+        await _repo.SaveAsync();
+    }
+
     public async Task RevertSoftDeleteAsync(int id)
     {
         if (id < 0) throw new IdIsNegativeException<Advertisment>();
@@ -156,4 +202,5 @@ public class AdvertismentService : IAdvertismentService
 
         await _repo.SaveAsync();
     }
+
 }

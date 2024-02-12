@@ -95,11 +95,13 @@ public class CompanyService : ICompanyService
     {
         if (takeAll == true)
         {
-            return _map.Map<ICollection<CompanyListItemDto>>(_repo.GetAllAsync("CompanyIndustries", "CompanyIndustries.Industry", "AppUser"));
+            return _map.Map<ICollection<CompanyListItemDto>>(_repo.GetAllAsync(
+                "CompanyIndustries", "CompanyIndustries.Industry", "AppUser", "Advertisments"));
         }
         else
         {
-            return _map.Map<ICollection<CompanyListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false, "CompanyIndustries", "CompanyIndustries.Industry", "AppUser"));
+            return _map.Map<ICollection<CompanyListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false,
+                "CompanyIndustries", "CompanyIndustries.Industry", "AppUser", "Advertisments"));
         }
     }
 
@@ -109,13 +111,14 @@ public class CompanyService : ICompanyService
 
         if (takeAll == true)
         {
-            var entity = await _repo.FindByIdAsync(id, "CompanyIndustries", "CompanyIndustries.Industry", "AppUser");
+            var entity = await _repo.FindByIdAsync(id, "CompanyIndustries", "CompanyIndustries.Industry", "AppUser", "Advertisments");
             if (entity == null) throw new NotFoundException<Company>();
             return _map.Map<CompanyDetailItemDto>(entity);
         }
         else
         {
-            var entity = await _repo.GetSingleAsync(c => c.Id == id && c.IsDeleted == false, "CompanyIndustries", "CompanyIndustries.Industry", "AppUser");
+            var entity = await _repo.GetSingleAsync(c => c.Id == id && c.IsDeleted == false,
+                "CompanyIndustries", "CompanyIndustries.Industry", "AppUser", "Advertisments");
             if (entity == null) throw new NotFoundException<Company>();
             return _map.Map<CompanyDetailItemDto>(entity);
         }

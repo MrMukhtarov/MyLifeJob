@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyLifeJob.Business.Dtos.AdvertismentDtos;
 using MyLifeJob.Business.Services.Interfaces;
+using MyLifeJob.Core.Enums;
 
 namespace MyLifeJob.API.Controllers;
 
@@ -59,6 +60,33 @@ public class AdvertismentsController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> AcceptState(int id)
+    {
+        await _service.AcceptState(id);
+        return Ok();
+    }
+
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> RejectState(int id)
+    {
+        await _service.RejectState(id);
+        return Ok();
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAllAccept()
+    {
+        return Ok(await _service.AcceptGetall());
+    }
+
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> UpdateState(int id, State state)
+    {
+        await _service.ChangeState(id, state);
         return Ok();
     }
 }
