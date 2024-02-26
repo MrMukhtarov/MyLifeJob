@@ -23,9 +23,10 @@ public class AdvertismentService : IAdvertismentService
     readonly IHttpContextAccessor _accessor;
     readonly UserManager<AppUser> _user;
     readonly ICompanyRepository _company;
+    readonly IAbilityRepository _ability;
 
     public AdvertismentService(IAdvertismentRepository repo, IMapper mapper, ICategoryRepository category, IHttpContextAccessor accessor,
-        UserManager<AppUser> user, ICompanyRepository company)
+        UserManager<AppUser> user, ICompanyRepository company, IAbilityRepository ability)
     {
         _repo = repo;
         _mapper = mapper;
@@ -34,11 +35,12 @@ public class AdvertismentService : IAdvertismentService
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _user = user;
         _company = company;
+        _ability = ability;
     }
 
     public async Task<ICollection<AdvertismentListItemDto>> AcceptGetall()
     {
-        var entity = _repo.FindAllAsync(a => a.IsDeleted == false && a.State == State.Accept);
+        var entity = _repo.FindAllAsync(a => a.IsDeleted == false && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability");
         return _mapper.Map<ICollection<AdvertismentListItemDto>>(entity);
     }
 
@@ -56,7 +58,7 @@ public class AdvertismentService : IAdvertismentService
     {
         if (id < 0) throw new IdIsNegativeException<Advertisment>();
         var entity = await _repo.FindByIdAsync(id);
-        if(entity == null) throw new NotFoundException<Advertisment>();
+        if (entity == null) throw new NotFoundException<Advertisment>();
 
         entity.State = state;
         await _repo.SaveAsync();
@@ -87,6 +89,20 @@ public class AdvertismentService : IAdvertismentService
 
         var map = _mapper.Map<Advertisment>(dto);
 
+        ICollection<AdvertismentAbility> abilitys = new List<AdvertismentAbility>();
+        if (dto.AbilityIds != null)
+        {
+            foreach (var item in dto.AbilityIds)
+            {
+                var ability = await _ability.FindByIdAsync(item);
+                if (ability == null) throw new NotFoundException<Ability>();
+                abilitys.Add(new AdvertismentAbility
+                {
+                    Ability = ability
+                });
+            }
+        }
+        map.AdvertismentAbilities = abilitys;
         var cat = await _category.FindByIdAsync(dto.CategoryId);
         if (cat == null || cat.IsDeleted) throw new NotFoundException<Category>();
         map.CategoryId = cat.Id;
@@ -124,9 +140,9 @@ public class AdvertismentService : IAdvertismentService
     public async Task<ICollection<AdvertismentListItemDto>> GetAll(bool takeAll)
     {
         if (takeAll)
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync());
+            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync("AdvertismentAbilities", "AdvertismentAbilities.Ability"));
         else
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false));
+            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability"));
     }
 
     public async Task<AdvertismentDetailItemDto> GetByIdAsync(bool takeAll, int id)
@@ -134,13 +150,13 @@ public class AdvertismentService : IAdvertismentService
         if (id < 0) throw new IdIsNegativeException<Advertisment>();
         if (takeAll)
         {
-            var entity = await _repo.FindByIdAsync(id);
+            var entity = await _repo.FindByIdAsync(id, "AdvertismentAbilities", "AdvertismentAbilities.Ability");
             if (entity == null) throw new NotFoundException<Advertisment>();
             return _mapper.Map<AdvertismentDetailItemDto>(entity);
         }
         else
         {
-            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false);
+            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability");
             if (entity == null) throw new NotFoundException<Advertisment>();
             entity.ViewCount++;
             await _repo.SaveAsync();
@@ -187,7 +203,7 @@ public class AdvertismentService : IAdvertismentService
     public async Task UpdateAsync(int id, AdvertismentUpdateDto dto)
     {
         if (id < 0) throw new IdIsNegativeException<Advertisment>();
-        var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false);
+        var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability");
         if (entity == null) throw new NotFoundException<Advertisment>();
 
         var map = _mapper.Map(dto, entity);
@@ -200,6 +216,21 @@ public class AdvertismentService : IAdvertismentService
         else
             throw new CategoryIdIsEmptyException();
 
+        ICollection<AdvertismentAbility> adverAbility = new List<AdvertismentAbility>();
+        if (dto.Abilityids != null)
+        {
+            if (entity.AdvertismentAbilities != null) entity.AdvertismentAbilities.Clear();
+            foreach (var item in dto.Abilityids)
+            {
+                var ability = await _ability.FindByIdAsync(item);
+                if (ability == null) throw new NotFoundException<Ability>();
+                adverAbility.Add(new AdvertismentAbility
+                {
+                    Ability = ability
+                });
+            }
+        }
+        entity.AdvertismentAbilities = adverAbility;
         await _repo.SaveAsync();
     }
 

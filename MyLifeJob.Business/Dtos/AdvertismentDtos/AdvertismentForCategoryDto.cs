@@ -16,8 +16,8 @@ public record AdvertismentForCategoryDto
     public string? Experience { get; set; }
     public string? Education { get; set; }
     public int ViewCount { get; set; }
-    public Status Status { get; set; }
+    public string Status { get; set; }
     public DateTime CreateDate { get; set; }
     public bool IsDeleted { get; set; }
-    public State State { get; set; }
+    public string State { get; set; }
 }

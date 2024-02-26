@@ -10,11 +10,10 @@ public class Advertisment : BaseEntity
     public decimal? Salary { get; set; }
     public string WorkGraphic { get; set; }
     public DateTime EndTime { get; set; }
-    public string? Ability { get; set; }
     public string Text { get; set; }
     public string Requirement { get; set; }
     public string? Experience { get; set; }
-    public string? Education { get; set; }
+    public Education? Education { get; set; }
     public int ViewCount { get; set; }
     public Status Status { get; set; }
     public DateTime CreateDate { get; set; }
@@ -23,4 +22,5 @@ public class Advertisment : BaseEntity
     public Company Company { get; set; }
     public int CompanyId { get; set; }
     public State State { get; set; }
+    public ICollection<AdvertismentAbility>? AdvertismentAbilities { get; set; }
 }

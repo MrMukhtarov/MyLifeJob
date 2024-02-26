@@ -35,6 +35,13 @@ public class AdvertismentsController : ControllerBase
         return Ok(await _service.GetByIdAsync(true, id));
     }
 
+
+    [HttpGet("[action]/{id}")]
+    public async Task<IActionResult> GetByClient(int id)
+    {
+        return Ok(await _service.GetByIdAsync(false, id));
+    }
+
     [HttpPut("[action]/{id}")]
     public async Task<IActionResult> Update([FromForm] AdvertismentUpdateDto dto, int id)
     {
