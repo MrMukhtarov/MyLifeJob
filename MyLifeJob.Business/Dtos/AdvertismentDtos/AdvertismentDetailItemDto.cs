@@ -1,4 +1,5 @@
-﻿using MyLifeJob.Core.Enums;
+﻿using MyLifeJob.Business.Dtos.TextDtos;
+using MyLifeJob.Core.Enums;
 
 namespace MyLifeJob.Business.Dtos.AdvertismentDtos;
 
@@ -11,7 +12,7 @@ public record AdvertismentDetailItemDto
     public string WorkGraphic { get; set; }
     public DateTime EndTime { get; set; }
     public IEnumerable<AdvertismentAbilityDto>? AdvertismentAbilities { get; set; }
-    public string Text { get; set; }
+    public ICollection<TextListItemDtos> Texts { get; set; }
     public string Requirement { get; set; }
     public string? Experience { get; set; }
     public string? Education { get; set; }

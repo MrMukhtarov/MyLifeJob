@@ -19,5 +19,6 @@ public static class ServiceRegistration
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IAdvertismentService, AdvertismentService>();
         services.AddScoped<IAbilityService, AbilityService>();
+        services.AddScoped<ITextService, TextService>();
     }
 }

@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using MyLifeJob.Business.Dtos.TextDtos;
 using MyLifeJob.Core.Enums;
 
 namespace MyLifeJob.Business.Dtos.AdvertismentDtos;
@@ -10,7 +12,7 @@ public record AdvertismentUpdateDto
     public decimal? Salary { get; set; }
     public string WorkGraphic { get; set; }
     public List<int>? Abilityids { get; set; }
-    public string Text { get; set; }
+    public List<TextUpdateItemDto> Text { get; set; }
     public string Requirement { get; set; }
     public string? Experience { get; set; }
     public Education? Education { get; set; }
@@ -26,8 +28,6 @@ public class AdvertismentUpdateDtoValidator : AbstractValidator<AdvertismentUpda
         RuleFor(a => a.Salary).GreaterThan(345).WithMessage("Salary must be grather than 345").When(a => a.Salary != null);
         RuleFor(a => a.WorkGraphic).NotEmpty().WithMessage("Advertisment Work Graphic not be empty").NotNull().WithMessage("Advertisment Work Graphic not be null");
         RuleFor(a => a.Abilityids).Must(a => CheckSameId(a)).WithMessage("Ability ids not repeated").When(a => a.Abilityids != null);
-        RuleFor(a => a.Text).NotEmpty().WithMessage("Advertisment Text not be empty").NotNull().WithMessage("Advertisment Text not be null")
-                            .MinimumLength(30).WithMessage("Text length must be grather than 30");
         RuleFor(a => a.Requirement).NotEmpty().WithMessage("Advertisment Requirement not be empty").NotNull().WithMessage("Advertisment Requirement not be null")
                                    .MinimumLength(30).WithMessage("Requirement length must be grather than 30");
         RuleFor(a => a.Experience).MinimumLength(20).WithMessage("Experience length must be grather than 20").When(a => a.Experience != null);
@@ -38,6 +38,7 @@ public class AdvertismentUpdateDtoValidator : AbstractValidator<AdvertismentUpda
     private bool CheckSameId(List<int> ids)
     {
         var encounteredIds = new HashSet<int>();
+
 
         if (ids == null || ids.Count == 0)
         {

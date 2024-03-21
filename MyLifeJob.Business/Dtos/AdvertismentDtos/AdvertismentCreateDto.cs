@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using MyLifeJob.Business.Dtos.TextDtos;
 using MyLifeJob.Core.Enums;
 
 namespace MyLifeJob.Business.Dtos.AdvertismentDtos;
@@ -10,7 +12,8 @@ public record AdvertismentCreateDto
     public decimal? Salary { get; set; }
     public string WorkGraphic { get; set; }
     public List<int>? AbilityIds { get; set; }
-    public string Text { get; set; }
+    //[FromForm]
+    public List<string> Text { get; set; }
     public string Requirement { get; set; }
     public string? Experience { get; set; }
     public Education? Education { get; set; }
@@ -26,8 +29,6 @@ public class AdvertismentCreateDtoValidator : AbstractValidator<AdvertismentCrea
         RuleFor(a => a.Salary).GreaterThan(344).WithMessage("Salary must be grather than 345").When(a => a.Salary != null);
         RuleFor(a => a.WorkGraphic).NotEmpty().WithMessage("Advertisment Work Graphic not be empty").NotNull().WithMessage("Advertisment Work Graphic not be null");
         RuleFor(a => a.AbilityIds).Must(c => CheckSameId(c)).WithMessage("Ability id same").When(a => a.AbilityIds != null);
-        RuleFor(a => a.Text).NotEmpty().WithMessage("Advertisment Text not be empty").NotNull().WithMessage("Advertisment Text not be null")
-                            .MinimumLength(30).WithMessage("Text length must be grather than 30");
         RuleFor(a => a.Requirement).NotEmpty().WithMessage("Advertisment Requirement not be empty").NotNull().WithMessage("Advertisment Requirement not be null")
                                    .MinimumLength(30).WithMessage("Requirement length must be grather than 30");
         RuleFor(a => a.Experience).MinimumLength(20).WithMessage("Experience length must be grather than 20").When(a => a.Experience != null);

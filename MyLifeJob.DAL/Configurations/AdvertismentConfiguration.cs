@@ -12,7 +12,6 @@ public class AdvertismentConfiguration : IEntityTypeConfiguration<Advertisment>
         builder.Property(a => a.City).IsRequired();
         builder.Property(a => a.WorkGraphic).IsRequired();
         builder.Property(a => a.EndTime).IsRequired();
-        builder.Property(a => a.Text).IsRequired();
         builder.Property(a => a.CreateDate).HasDefaultValueSql("DATEADD(hour,4,GETUTCDATE())");
         builder.Property(a => a.Requirement).IsRequired();
         builder.HasOne(a => a.Category).WithMany(a => a.Advertisments).HasForeignKey(a => a.CategoryId);

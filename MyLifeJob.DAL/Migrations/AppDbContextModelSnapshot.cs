@@ -223,10 +223,6 @@ namespace MyLifeJob.DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -513,6 +509,31 @@ namespace MyLifeJob.DAL.Migrations
                     b.ToTable("Industries");
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Text", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AdvertismentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertismentId");
+
+                    b.ToTable("Texts");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -643,6 +664,17 @@ namespace MyLifeJob.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Text", b =>
+                {
+                    b.HasOne("MyLifeJob.Core.Entity.Advertisment", "Advertisment")
+                        .WithMany("Texts")
+                        .HasForeignKey("AdvertismentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advertisment");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.Ability", b =>
                 {
                     b.Navigation("AdvertismentAbilities");
@@ -651,6 +683,8 @@ namespace MyLifeJob.DAL.Migrations
             modelBuilder.Entity("MyLifeJob.Core.Entity.Advertisment", b =>
                 {
                     b.Navigation("AdvertismentAbilities");
+
+                    b.Navigation("Texts");
                 });
 
             modelBuilder.Entity("MyLifeJob.Core.Entity.AppUser", b =>

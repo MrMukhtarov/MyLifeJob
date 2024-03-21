@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using MyLifeJob.Business.Exceptions.Advertisment;
 using Microsoft.EntityFrameworkCore;
 using MyLifeJob.Business.Exceptions.User;
+using MyLifeJob.Business.Dtos.TextDtos;
 
 namespace MyLifeJob.Business.Services.Implements;
 
@@ -24,9 +25,12 @@ public class AdvertismentService : IAdvertismentService
     readonly UserManager<AppUser> _user;
     readonly ICompanyRepository _company;
     readonly IAbilityRepository _ability;
+    readonly ITextService _textService;
+    readonly ITextRepository _textRepository;
 
     public AdvertismentService(IAdvertismentRepository repo, IMapper mapper, ICategoryRepository category, IHttpContextAccessor accessor,
-        UserManager<AppUser> user, ICompanyRepository company, IAbilityRepository ability)
+        UserManager<AppUser> user, ICompanyRepository company, IAbilityRepository ability, ITextService textService,
+        ITextRepository textRepository)
     {
         _repo = repo;
         _mapper = mapper;
@@ -36,6 +40,8 @@ public class AdvertismentService : IAdvertismentService
         _user = user;
         _company = company;
         _ability = ability;
+        _textService = textService;
+        _textRepository = textRepository;
     }
 
     public async Task<ICollection<AdvertismentListItemDto>> AcceptGetall()
@@ -111,9 +117,14 @@ public class AdvertismentService : IAdvertismentService
         map.State = State.Pending;
 
         map.EndTime = DateTime.Now.AddDays(31);
-
         await _repo.CreateAsync(map);
         await _repo.SaveAsync();
+
+        foreach (var item in dto.Text)
+        {
+            await _textService.CreateAsync(new TextCreateDto { Content = item }, map.Id);
+        }
+        await _textRepository.SaveAsync();
     }
 
     public async Task DeleteAsync(int id)
@@ -140,9 +151,9 @@ public class AdvertismentService : IAdvertismentService
     public async Task<ICollection<AdvertismentListItemDto>> GetAll(bool takeAll)
     {
         if (takeAll)
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync("AdvertismentAbilities", "AdvertismentAbilities.Ability"));
+            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync("AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts"));
         else
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability"));
+            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts"));
     }
 
     public async Task<AdvertismentDetailItemDto> GetByIdAsync(bool takeAll, int id)
@@ -150,13 +161,13 @@ public class AdvertismentService : IAdvertismentService
         if (id < 0) throw new IdIsNegativeException<Advertisment>();
         if (takeAll)
         {
-            var entity = await _repo.FindByIdAsync(id, "AdvertismentAbilities", "AdvertismentAbilities.Ability");
+            var entity = await _repo.FindByIdAsync(id, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts");
             if (entity == null) throw new NotFoundException<Advertisment>();
             return _mapper.Map<AdvertismentDetailItemDto>(entity);
         }
         else
         {
-            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability");
+            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts");
             if (entity == null) throw new NotFoundException<Advertisment>();
             entity.ViewCount++;
             await _repo.SaveAsync();
@@ -230,6 +241,17 @@ public class AdvertismentService : IAdvertismentService
                 });
             }
         }
+
+        if (dto.Text != null)
+        {
+            foreach (var item in dto.Text)
+            {
+                await _textService.UpdateAsync(item);
+                await _textRepository.SaveAsync();
+            }
+        }
+
+
         entity.AdvertismentAbilities = adverAbility;
         await _repo.SaveAsync();
     }

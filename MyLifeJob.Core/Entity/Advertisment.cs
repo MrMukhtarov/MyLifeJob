@@ -10,7 +10,7 @@ public class Advertisment : BaseEntity
     public decimal? Salary { get; set; }
     public string WorkGraphic { get; set; }
     public DateTime EndTime { get; set; }
-    public string Text { get; set; }
+    public ICollection<Text> Texts { get; set; }
     public string Requirement { get; set; }
     public string? Experience { get; set; }
     public Education? Education { get; set; }
