@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyLifeJob.Business.Dtos.AdvertismentDtos;
+using MyLifeJob.Business.Dtos.TextDtos;
 using MyLifeJob.Business.Services.Interfaces;
 using MyLifeJob.Core.Enums;
 
@@ -94,6 +95,48 @@ public class AdvertismentsController : ControllerBase
     public async Task<IActionResult> UpdateState(int id, State state)
     {
         await _service.ChangeState(id, state);
+        return Ok();
+    }
+
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> UpdateText([FromForm] List<string> texts, [FromForm] List<int> ids, int id)
+    {
+        await _service.UpdateTextInTheAdvertismentAsync(ids, texts, id);
+        return Ok();
+    }
+
+    [HttpPost("[action]/{id}")]
+    public async Task<IActionResult> CreateText([FromForm] List<string> texts, int id)
+    {
+        await _service.CreateTextInAdvertismentAsync(texts, id);
+        return Ok();
+    }
+
+    [HttpDelete("[action]/{id}")]
+    public async Task<IActionResult> DeleteText([FromForm] List<int> ids, int id)
+    {
+        await _service.DeleteTextInAdvertismetUpdateAsync(ids, id);
+        return Ok();
+    }
+
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> UpdateRequirement([FromForm] List<string> texts, [FromForm] List<int> ids, int id)
+    {
+        await _service.UpdateRequirementInTheAdvertismentAsync(ids, texts, id);
+        return Ok();
+    }
+
+    [HttpPost("[action]/{id}")]
+    public async Task<IActionResult> CreateRequirement([FromForm] List<string> texts, int id)
+    {
+        await _service.CreateRequirementInAdvertismentAsync(texts, id);
+        return Ok();
+    }
+
+    [HttpDelete("[action]/{id}")]
+    public async Task<IActionResult> DeleteRequirement([FromForm] List<int> ids, int id)
+    {
+        await _service.DeleteRequirementInAdvertismetUpdateAsync(ids, id);
         return Ok();
     }
 }

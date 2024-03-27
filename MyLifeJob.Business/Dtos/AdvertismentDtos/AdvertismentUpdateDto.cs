@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using MyLifeJob.Business.Dtos.TextDtos;
 using MyLifeJob.Core.Enums;
 
 namespace MyLifeJob.Business.Dtos.AdvertismentDtos;
@@ -12,7 +10,6 @@ public record AdvertismentUpdateDto
     public decimal? Salary { get; set; }
     public string WorkGraphic { get; set; }
     public List<int>? Abilityids { get; set; }
-    public List<TextUpdateItemDto> Text { get; set; }
     public string Requirement { get; set; }
     public string? Experience { get; set; }
     public Education? Education { get; set; }

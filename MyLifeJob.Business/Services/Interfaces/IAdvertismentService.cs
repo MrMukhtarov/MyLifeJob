@@ -1,4 +1,5 @@
 ﻿using MyLifeJob.Business.Dtos.AdvertismentDtos;
+using MyLifeJob.Business.Dtos.TextDtos;
 using MyLifeJob.Core.Enums;
 
 namespace MyLifeJob.Business.Services.Interfaces;
@@ -18,4 +19,10 @@ public interface IAdvertismentService
     Task RejectState(int id);
     Task<ICollection<AdvertismentListItemDto>> AcceptGetall();
     Task ChangeState(int id, State state);
+    Task UpdateTextInTheAdvertismentAsync(List<int> ids, List<string> texts, int id);
+    Task CreateTextInAdvertismentAsync(List<string> context, int adverId);
+    Task DeleteTextInAdvertismetUpdateAsync(List<int> ids, int adverId);
+    Task UpdateRequirementInTheAdvertismentAsync(List<int> ids, List<string> texts, int id);
+    Task CreateRequirementInAdvertismentAsync(List<string> context, int adverId);
+    Task DeleteRequirementInAdvertismetUpdateAsync(List<int> ids, int adverId);
 }

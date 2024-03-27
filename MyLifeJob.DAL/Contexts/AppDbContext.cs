@@ -23,4 +23,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Advertisment> Advertisments { get; set; }
     public DbSet<AdvertismentAbility> AdvertismentAbilities { get; set; }
     public DbSet<Text> Texts { get; set; }
+    public DbSet<Requirement> Requirements { get; set; }
 }

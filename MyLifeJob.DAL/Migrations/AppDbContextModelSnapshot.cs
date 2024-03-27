@@ -210,10 +210,6 @@ namespace MyLifeJob.DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Requirement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal?>("Salary")
                         .HasColumnType("decimal(18,2)");
 
@@ -509,6 +505,31 @@ namespace MyLifeJob.DAL.Migrations
                     b.ToTable("Industries");
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Requirement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AdvertismentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertismentId");
+
+                    b.ToTable("Requirements");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.Text", b =>
                 {
                     b.Property<int>("Id")
@@ -664,6 +685,17 @@ namespace MyLifeJob.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MyLifeJob.Core.Entity.Requirement", b =>
+                {
+                    b.HasOne("MyLifeJob.Core.Entity.Advertisment", "Advertisment")
+                        .WithMany("Requirements")
+                        .HasForeignKey("AdvertismentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advertisment");
+                });
+
             modelBuilder.Entity("MyLifeJob.Core.Entity.Text", b =>
                 {
                     b.HasOne("MyLifeJob.Core.Entity.Advertisment", "Advertisment")
@@ -683,6 +715,8 @@ namespace MyLifeJob.DAL.Migrations
             modelBuilder.Entity("MyLifeJob.Core.Entity.Advertisment", b =>
                 {
                     b.Navigation("AdvertismentAbilities");
+
+                    b.Navigation("Requirements");
 
                     b.Navigation("Texts");
                 });

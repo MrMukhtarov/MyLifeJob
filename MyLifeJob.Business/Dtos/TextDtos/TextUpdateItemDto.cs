@@ -5,7 +5,7 @@ namespace MyLifeJob.Business.Dtos.TextDtos;
 public record TextUpdateItemDto
 {
     public string Content { get; set; }
-    public int Id { get; set; }
+    //public int Id { get; set; }
 }
 public class TextUpdateItemDtoValidator : AbstractValidator<TextUpdateItemDto>
 {

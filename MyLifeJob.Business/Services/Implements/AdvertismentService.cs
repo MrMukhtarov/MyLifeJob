@@ -12,6 +12,9 @@ using MyLifeJob.Business.Exceptions.Advertisment;
 using Microsoft.EntityFrameworkCore;
 using MyLifeJob.Business.Exceptions.User;
 using MyLifeJob.Business.Dtos.TextDtos;
+using MyLifeJob.Business.Exceptions.Text;
+using MyLifeJob.Business.Dtos.RequirementDtos;
+using MyLifeJob.Business.Exceptions.Requirement;
 
 namespace MyLifeJob.Business.Services.Implements;
 
@@ -27,10 +30,12 @@ public class AdvertismentService : IAdvertismentService
     readonly IAbilityRepository _ability;
     readonly ITextService _textService;
     readonly ITextRepository _textRepository;
+    readonly IRequirementService _reqService;
+    readonly IRequirementRepository _reqRepo;
 
     public AdvertismentService(IAdvertismentRepository repo, IMapper mapper, ICategoryRepository category, IHttpContextAccessor accessor,
         UserManager<AppUser> user, ICompanyRepository company, IAbilityRepository ability, ITextService textService,
-        ITextRepository textRepository)
+        ITextRepository textRepository, IRequirementService reqService, IRequirementRepository reqRepo)
     {
         _repo = repo;
         _mapper = mapper;
@@ -42,6 +47,8 @@ public class AdvertismentService : IAdvertismentService
         _ability = ability;
         _textService = textService;
         _textRepository = textRepository;
+        _reqService = reqService;
+        _reqRepo = reqRepo;
     }
 
     public async Task<ICollection<AdvertismentListItemDto>> AcceptGetall()
@@ -125,6 +132,37 @@ public class AdvertismentService : IAdvertismentService
             await _textService.CreateAsync(new TextCreateDto { Content = item }, map.Id);
         }
         await _textRepository.SaveAsync();
+
+        foreach (var item in dto.Requirement)
+        {
+            await _reqService.CreateAsync(new RequirementCreateDto { Content = item }, map.Id);
+        }
+        await _reqRepo.SaveAsync();
+    }
+
+    public async Task CreateRequirementInAdvertismentAsync(List<string> context, int adverId)
+    {
+        if (adverId < 0) throw new IdIsNegativeException<Advertisment>();
+        var adver = await _repo.FindByIdAsync(adverId);
+        if (adver == null) throw new NotFoundException<Advertisment>();
+
+        foreach (var item in context)
+        {
+            await _reqService.CreateAsync(new RequirementCreateDto { Content = item }, adverId);
+        }
+    }
+
+    public async Task CreateTextInAdvertismentAsync(List<string> context, int adverId)
+    {
+        if (adverId < 0) throw new IdIsNegativeException<Advertisment>();
+        var adver = await _repo.FindByIdAsync(adverId);
+        if (adver == null) throw new NotFoundException<Advertisment>();
+
+        foreach (var item in context)
+        {
+            await _textService.CreateAsync(new TextCreateDto { Content = item }, adverId);
+        }
+        await _textRepository.SaveAsync();
     }
 
     public async Task DeleteAsync(int id)
@@ -135,6 +173,39 @@ public class AdvertismentService : IAdvertismentService
 
         _repo.Delete(entity);
         await _repo.SaveAsync();
+    }
+
+    public async Task DeleteRequirementInAdvertismetUpdateAsync(List<int> ids, int adverId)
+    {
+        if (adverId < 0) throw new IdIsNegativeException<Advertisment>();
+        var adver = await _repo.FindByIdAsync(adverId, "Requirements");
+        if (adver == null) throw new NotFoundException<Advertisment>();
+
+        foreach (var item in ids)
+        {
+            var req = await _reqService.GetByIdAsync(item);
+            if (req == null) throw new NotFoundException<Requirement>();
+            await _reqService.DeleteAsync(req.Id);
+        }
+    }
+
+    public async Task DeleteTextInAdvertismetUpdateAsync(List<int> ids, int adverId)
+    {
+        if (adverId < 0) throw new IdIsNegativeException<Advertisment>();
+        var adver = await _repo.FindByIdAsync(adverId, "Texts");
+        if (adver == null) throw new NotFoundException<Advertisment>();
+
+        foreach (var item in ids)
+        {
+            if (item < 0) throw new IdIsNegativeException<Text>();
+            var text = await _textService.GetByIdAsync(item);
+            if (text == null) throw new NotFoundException<Text>();
+
+            if (text.AdvertismentId != adverId) throw new TextAdverIdNotMatchThisIdException();
+
+            await _textService.DeleteAsync(item);
+        }
+        await _textRepository.SaveAsync();
     }
 
     public async Task ExpiresDeletion()
@@ -151,9 +222,9 @@ public class AdvertismentService : IAdvertismentService
     public async Task<ICollection<AdvertismentListItemDto>> GetAll(bool takeAll)
     {
         if (takeAll)
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync("AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts"));
+            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync("AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements"));
         else
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts"));
+            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements"));
     }
 
     public async Task<AdvertismentDetailItemDto> GetByIdAsync(bool takeAll, int id)
@@ -161,13 +232,13 @@ public class AdvertismentService : IAdvertismentService
         if (id < 0) throw new IdIsNegativeException<Advertisment>();
         if (takeAll)
         {
-            var entity = await _repo.FindByIdAsync(id, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts");
+            var entity = await _repo.FindByIdAsync(id, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements");
             if (entity == null) throw new NotFoundException<Advertisment>();
             return _mapper.Map<AdvertismentDetailItemDto>(entity);
         }
         else
         {
-            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts");
+            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements");
             if (entity == null) throw new NotFoundException<Advertisment>();
             entity.ViewCount++;
             await _repo.SaveAsync();
@@ -242,18 +313,42 @@ public class AdvertismentService : IAdvertismentService
             }
         }
 
-        if (dto.Text != null)
-        {
-            foreach (var item in dto.Text)
-            {
-                await _textService.UpdateAsync(item);
-                await _textRepository.SaveAsync();
-            }
-        }
-
 
         entity.AdvertismentAbilities = adverAbility;
         await _repo.SaveAsync();
     }
 
+    public async Task UpdateRequirementInTheAdvertismentAsync(List<int> ids, List<string> texts, int id)
+    {
+        if (id < 0) throw new IdIsNegativeException<Advertisment>();
+        var adver = await _repo.FindByIdAsync(id, "Requirements");
+        if (adver == null) throw new NotFoundException<Advertisment>();
+
+        for (int i = 0; i < ids.Count; i++)
+        {
+            var req = await _reqService.GetByIdAsync(ids[i]);
+            if (req == null) throw new NotFoundException<Requirement>();
+
+            if (req.AdvertismentId != id) throw new RequirementAdverTismentIdNotMatchThisIdException();
+            await _reqService.UpdateAsync(new RequirementUpdateItemDto { Content = texts[i] }, ids[i]);
+        }
+    }
+
+    public async Task UpdateTextInTheAdvertismentAsync(List<int> ids, List<string> texts, int id)
+    {
+        if (id < 0) throw new IdIsNegativeException<Advertisment>();
+        var adver = await _repo.FindByIdAsync(id, "Texts");
+        if (adver == null) throw new NotFoundException<Advertisment>();
+
+        for (var i = 0; i < ids.Count; i++)
+        {
+            var text = await _textService.GetByIdAsync(ids[i]);
+            if (text == null) throw new NotFoundException<Text>();
+
+            if (text.AdvertismentId != id) throw new TextAdverIdNotMatchThisIdException();
+
+            await _textService.UpdateAsync(new TextUpdateItemDto { Content = texts[i] }, ids[i]);
+        }
+        await _textRepository.SaveAsync();
+    }
 }

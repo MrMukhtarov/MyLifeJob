@@ -11,7 +11,7 @@ public class Advertisment : BaseEntity
     public string WorkGraphic { get; set; }
     public DateTime EndTime { get; set; }
     public ICollection<Text> Texts { get; set; }
-    public string Requirement { get; set; }
+    public ICollection<Requirement> Requirements { get; set; }
     public string? Experience { get; set; }
     public Education? Education { get; set; }
     public int ViewCount { get; set; }
