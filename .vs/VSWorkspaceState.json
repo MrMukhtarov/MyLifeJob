@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\MyLifeJob.API",
+    "\\MyLifeJob.API\\Controllers",
+    "\\MyLifeJob.Business",
+    "\\MyLifeJob.Business\\Services",
+    "\\MyLifeJob.Business\\Services\\Interfaces"
+  ],
+  "SelectedNode": "\\MyLifeJob.Business\\MyLifeJob.Business.csproj",
+  "PreviewInSolutionExplorer": false
+}

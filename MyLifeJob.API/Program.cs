@@ -15,6 +15,7 @@ using System.Text;
 using MyLifeJob.Business.Constants;
 using MyLifeJob.DAL;
 using Hangfire;
+using Microsoft.Extensions.FileProviders;
 
 namespace MyLifeJob.API
 {
@@ -24,6 +25,18 @@ namespace MyLifeJob.API
         {
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
+
+            //Cors
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                    });
+            });
 
             builder.Services.AddControllers().AddNewtonsoftJson(opt =>
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -141,6 +154,14 @@ namespace MyLifeJob.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot/imgs")),
+                RequestPath = "/wwwroot/imgs"
+            });
+
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
 

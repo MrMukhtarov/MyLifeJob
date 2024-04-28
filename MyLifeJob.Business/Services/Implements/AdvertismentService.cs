@@ -15,6 +15,7 @@ using MyLifeJob.Business.Dtos.TextDtos;
 using MyLifeJob.Business.Exceptions.Text;
 using MyLifeJob.Business.Dtos.RequirementDtos;
 using MyLifeJob.Business.Exceptions.Requirement;
+using Microsoft.Extensions.Configuration;
 
 namespace MyLifeJob.Business.Services.Implements;
 
@@ -32,10 +33,11 @@ public class AdvertismentService : IAdvertismentService
     readonly ITextRepository _textRepository;
     readonly IRequirementService _reqService;
     readonly IRequirementRepository _reqRepo;
+    readonly IConfiguration _config;
 
     public AdvertismentService(IAdvertismentRepository repo, IMapper mapper, ICategoryRepository category, IHttpContextAccessor accessor,
         UserManager<AppUser> user, ICompanyRepository company, IAbilityRepository ability, ITextService textService,
-        ITextRepository textRepository, IRequirementService reqService, IRequirementRepository reqRepo)
+        ITextRepository textRepository, IRequirementService reqService, IRequirementRepository reqRepo, IConfiguration config)
     {
         _repo = repo;
         _mapper = mapper;
@@ -49,6 +51,7 @@ public class AdvertismentService : IAdvertismentService
         _textRepository = textRepository;
         _reqService = reqService;
         _reqRepo = reqRepo;
+        _config = config;
     }
 
     public async Task<ICollection<AdvertismentListItemDto>> AcceptGetall()
@@ -222,9 +225,18 @@ public class AdvertismentService : IAdvertismentService
     public async Task<ICollection<AdvertismentListItemDto>> GetAll(bool takeAll)
     {
         if (takeAll)
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync("AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements"));
+        {
+            var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.GetAllAsync("AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company"));
+
+            foreach (var item in map)
+            {
+                item.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Company.Logo;
+            }
+
+            return map;
+        }
         else
-            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements"));
+            return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company"));
     }
 
     public async Task<AdvertismentDetailItemDto> GetByIdAsync(bool takeAll, int id)
