@@ -33,8 +33,16 @@
       "PackagePath": "staticwebassets\\Imgs\\Company\\a1bf9dac-2b1c-4d72-99b8-cd458275fcfe.png"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Company\\b5244ff7-956c-4898-818d-7dd54cf387ac.png",
+      "PackagePath": "staticwebassets\\Imgs\\Company\\b5244ff7-956c-4898-818d-7dd54cf387ac.png"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\7f61ff2d-7b4e-41b3-bf31-4799d75f0afa.png",
       "PackagePath": "staticwebassets\\Imgs\\Industiry\\7f61ff2d-7b4e-41b3-bf31-4799d75f0afa.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\MyLifeJob_API\\MyLifeJob.API\\wwwroot\\Imgs\\Industiry\\f225c9fa-21c4-45b4-b4bf-ab1efc0f04f4.jpg",
+      "PackagePath": "staticwebassets\\Imgs\\Industiry\\f225c9fa-21c4-45b4-b4bf-ab1efc0f04f4.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.MyLifeJob.API.Microsoft.AspNetCore.StaticWebAssets.props",

@@ -1,4 +1,6 @@
-﻿namespace MyLifeJob.Business.Dtos.CompanyDtos;
+﻿using MyLifeJob.Business.Dtos.AdvertismentDtos;
+
+namespace MyLifeJob.Business.Dtos.CompanyDtos;
 
 public record CompanyIndustrySingleItemDto
 {
@@ -12,4 +14,5 @@ public record CompanyIndustrySingleItemDto
     public string Description { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime Date { get; set; }
+    public List<AdvertismentDetailItemDto> Advertisments { get; set; }
 }

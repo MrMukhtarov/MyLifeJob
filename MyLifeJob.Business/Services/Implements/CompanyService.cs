@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MyLifeJob.Business.Constants;
 using MyLifeJob.Business.Dtos.CompanyDtos;
 using MyLifeJob.Business.Exceptions.Commons;
@@ -25,9 +26,10 @@ public class CompanyService : ICompanyService
     private string? _userId;
     readonly IHttpContextAccessor _accessor;
     readonly UserManager<AppUser> _user;
+    readonly IConfiguration _config;
 
     public CompanyService(ICompanyRepository repo, IMapper map, IFileService file, IIndustiryRepository industry,
-        IHttpContextAccessor accessor, UserManager<AppUser> user)
+        IHttpContextAccessor accessor, UserManager<AppUser> user, IConfiguration config)
     {
         _repo = repo;
         _map = map;
@@ -36,6 +38,7 @@ public class CompanyService : ICompanyService
         _accessor = accessor;
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _user = user;
+        _config = config;
     }
 
     public async Task CreateAsync(CompanyCreateDto dto)
@@ -95,13 +98,23 @@ public class CompanyService : ICompanyService
     {
         if (takeAll == true)
         {
-            return _map.Map<ICollection<CompanyListItemDto>>(_repo.GetAllAsync(
+            var data = _map.Map<ICollection<CompanyListItemDto>>(_repo.GetAllAsync(
                 "CompanyIndustries", "CompanyIndustries.Industry", "AppUser", "Advertisments"));
+            foreach (var item in data)
+            {
+                item.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Logo;
+            }
+            return data;
         }
         else
         {
-            return _map.Map<ICollection<CompanyListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false,
+            var data = _map.Map<ICollection<CompanyListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false,
                 "CompanyIndustries", "CompanyIndustries.Industry", "AppUser", "Advertisments"));
+            foreach (var item in data)
+            {
+                item.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Logo;
+            }
+            return data;
         }
     }
 

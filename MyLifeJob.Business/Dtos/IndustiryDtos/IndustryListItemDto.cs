@@ -8,5 +8,6 @@ public record IndustryListItemDto
     public string Name { get; set; }
     public string Logo { get; set; }
     public bool IsDeleted { get; set; }
+    public int AdverCount { get; set; }
     public ICollection<IndustryCompanyDto> CompanyIndustries { get; set; }
 }

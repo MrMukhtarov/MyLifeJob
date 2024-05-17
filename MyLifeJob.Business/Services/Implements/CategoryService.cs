@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MyLifeJob.Business.Constants;
 using MyLifeJob.Business.Dtos.CategoryDtos;
 using MyLifeJob.Business.Exceptions.Commons;
@@ -17,12 +19,14 @@ public class CategoryService : ICategoryService
     readonly ICategoryRepository _repo;
     readonly IFileService _file;
     readonly IMapper _mapper;
+    readonly IConfiguration _config;
 
-    public CategoryService(ICategoryRepository repo, IFileService file, IMapper mapper)
+    public CategoryService(ICategoryRepository repo, IFileService file, IMapper mapper, IConfiguration config)
     {
         _repo = repo;
         _file = file;
         _mapper = mapper;
+        _config = config;
     }
 
     public async Task CreateAsync(CategoryCreateDto dto)
@@ -55,11 +59,21 @@ public class CategoryService : ICategoryService
     {
         if (takeAll == true)
         {
-            return _mapper.Map<ICollection<CategoryListItemDto>>(_repo.GetAllAsync("Advertisments"));
+            var data = _mapper.Map<ICollection<CategoryListItemDto>>(_repo.GetAllAsync("Advertisments"));
+            foreach (var item in data)
+            {
+                item.LogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.LogoUrl;
+            }
+            return data;
         }
         else
         {
-            return _mapper.Map<ICollection<CategoryListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false, "Advertisments"));
+            var data = _mapper.Map<ICollection<CategoryListItemDto>>(_repo.FindAllAsync(c => c.IsDeleted == false, "Advertisments"));
+            foreach (var item in data)
+            {
+                item.LogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.LogoUrl;
+            }
+            return data;
         }
     }
 

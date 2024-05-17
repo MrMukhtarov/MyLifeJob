@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using MyLifeJob.Business.Constants;
 using MyLifeJob.Business.Dtos.IndustiryDtos;
+using MyLifeJob.Business.Exceptions.Commons;
+using MyLifeJob.Business.Exceptions.FileService;
 using MyLifeJob.Business.Exceptions.Industry;
+using MyLifeJob.Business.Extensions;
 using MyLifeJob.Business.ExternalServices.Interfaces;
 using MyLifeJob.Business.Services.Interfaces;
-using MyLifeJob.DAL.Repositories.Interfaces;
-using MyLifeJob.Business.Extensions;
-using MyLifeJob.Business.Exceptions.FileService;
 using MyLifeJob.Core.Entity;
-using MyLifeJob.Business.Constants;
-using Microsoft.EntityFrameworkCore;
-using MyLifeJob.Business.Exceptions.Commons;
+using MyLifeJob.DAL.Repositories.Interfaces;
 
 namespace MyLifeJob.Business.Services.Implements;
 
@@ -18,12 +18,17 @@ public class IndustryService : IIndustiryService
     readonly IIndustiryRepository _repo;
     readonly IMapper _mapper;
     readonly IFileService _file;
+    readonly IAdvertismentRepository _advertisment;
+    readonly IConfiguration _config;
 
-    public IndustryService(IIndustiryRepository repo, IMapper mapper, IFileService file)
+    public IndustryService(IIndustiryRepository repo, IMapper mapper, IFileService file, IAdvertismentRepository advertisment,
+        IConfiguration config)
     {
         _repo = repo;
         _mapper = mapper;
         _file = file;
+        _advertisment = advertisment;
+        _config = config;
     }
 
     public async Task CreateAsync(IndustryCreateDto dto)
@@ -56,15 +61,25 @@ public class IndustryService : IIndustiryService
 
     public async Task<ICollection<IndustryListItemDto>> GetAllAsync(bool takeAll)
     {
-        var data = _repo.GetAllAsync("CompanyIndustries", "CompanyIndustries.Company");
+        var data = _repo.GetAllAsync("CompanyIndustries", "CompanyIndustries.Company", "CompanyIndustries.Company.Advertisments");
         if (takeAll == true)
         {
-            return _mapper.Map<ICollection<IndustryListItemDto>>(data);
+            var datas = _mapper.Map<ICollection<IndustryListItemDto>>(data);
+            foreach (var item in datas)
+            {
+                item.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Logo;
+            }
+            return datas;
         }
         else
         {
             var filteredData = data.Where(i => i.IsDeleted == false);
-            return _mapper.Map<ICollection<IndustryListItemDto>>(filteredData);
+            var datas = _mapper.Map<ICollection<IndustryListItemDto>>(filteredData);
+            foreach (var item in datas)
+            {
+                item.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Logo;
+            }
+            return datas;
         }
     }
 
