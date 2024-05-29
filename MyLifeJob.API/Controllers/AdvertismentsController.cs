@@ -139,4 +139,10 @@ public class AdvertismentsController : ControllerBase
         await _service.DeleteRequirementInAdvertismetUpdateAsync(ids, id);
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> FilteredData([FromQuery] FilteredAdvertismentDto dto)
+    {
+        return Ok(await _service.Filter(dto));
+    }
 }

@@ -25,4 +25,5 @@ public interface IAdvertismentService
     Task UpdateRequirementInTheAdvertismentAsync(List<int> ids, List<string> texts, int id);
     Task CreateRequirementInAdvertismentAsync(List<string> context, int adverId);
     Task DeleteRequirementInAdvertismetUpdateAsync(List<int> ids, int adverId);
+    Task<ICollection<AdvertismentListItemDto>> Filter(FilteredAdvertismentDto filter);
 }

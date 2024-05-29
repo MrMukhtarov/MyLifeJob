@@ -222,6 +222,25 @@ public class AdvertismentService : IAdvertismentService
         await _repo.SaveAsync();
     }
 
+    public async Task<ICollection<AdvertismentListItemDto>> Filter(FilteredAdvertismentDto filter)
+    {
+        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
+
+        if (filter.Date != null)
+        {
+            var filteredData = _repo.FindAllAsync(a => a.CreateDate >= DateTime.Now.AddDays(-(int)filter.Date) && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+            var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
+            adver = map;
+        }
+
+        foreach (var item in adver)
+        {
+            item.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Company.Logo;
+        }
+
+        return adver;
+    }
+
     public async Task<ICollection<AdvertismentListItemDto>> GetAll(bool takeAll)
     {
         if (takeAll)
