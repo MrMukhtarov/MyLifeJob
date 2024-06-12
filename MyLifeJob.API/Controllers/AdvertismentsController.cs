@@ -145,4 +145,10 @@ public class AdvertismentsController : ControllerBase
     {
         return Ok(await _service.Filter(dto));
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Test(FilterDate date)
+    {
+        return Ok(await _service.SortAdverDate(date));
+    }
 }

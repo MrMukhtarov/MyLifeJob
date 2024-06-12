@@ -222,24 +222,6 @@ public class AdvertismentService : IAdvertismentService
         await _repo.SaveAsync();
     }
 
-    public async Task<ICollection<AdvertismentListItemDto>> Filter(FilteredAdvertismentDto filter)
-    {
-        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
-
-        if (filter.Date != null)
-        {
-            var filteredData = _repo.FindAllAsync(a => a.CreateDate >= DateTime.Now.AddDays(-(int)filter.Date) && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
-            var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
-            adver = map;
-        }
-
-        foreach (var item in adver)
-        {
-            item.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Company.Logo;
-        }
-
-        return adver;
-    }
 
     public async Task<ICollection<AdvertismentListItemDto>> GetAll(bool takeAll)
     {
@@ -312,6 +294,86 @@ public class AdvertismentService : IAdvertismentService
         entity.IsDeleted = true;
         await _repo.SaveAsync();
     }
+    public async Task<ICollection<AdvertismentListItemDto>> Filter(FilteredAdvertismentDto filter)
+    {
+        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
+
+        if (filter.Date != null)
+        {
+            var filteredData = _repo.FindAllAsync(a => a.CreateDate >= DateTime.Now.AddDays(-(int)filter.Date) && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+            var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
+            adver = map;
+        }
+
+        foreach (var item in adver)
+        {
+            item.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Company.Logo;
+        }
+
+        return adver;
+    }
+
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdver(Sort sort)
+    {
+        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
+        var data = await _repo.FindAllAsync(a => a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company").ToListAsync();
+
+        if (sort == Sort.Salary)
+        {
+            var sortDataSalary = data.OrderByDescending(a => a.Salary);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataSalary);
+        }
+        else if (sort == Sort.Position)
+        {
+            var sortDataTitle = data.OrderBy(a => a.Title);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataTitle);
+        }
+        else if (sort == Sort.Company)
+        {
+            var sortDataCompany = data.OrderBy(a => a.Company.Name);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataCompany);
+        }
+        else if (sort == Sort.View)
+        {
+            var sortDataView = data.OrderByDescending(a => a.ViewCount);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataView);
+        }
+
+        return adver;
+    }
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdverSalary(SortSalary salary)
+    {
+        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
+        var data = _repo.FindAllAsync(a => a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+
+        if (salary == SortSalary.ZeroFiveHundred)
+        {
+            var dataOne = data.Where(a => a.Salary > 0 && a.Salary <= 500);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataOne);
+        }
+        else if (salary == SortSalary.FiveHundredOneThousand)
+        {
+            var dataTwo = data.Where(a => a.Salary >= 500 && a.Salary <= 1000);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataTwo);
+        }
+        else if (salary == SortSalary.OneThousandTwoousand)
+        {
+            var dataThree = data.Where(a => a.Salary >= 1000 && a.Salary <= 2000);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataThree);
+        }
+        else if (salary == SortSalary.TwoThousandFiveThousand)
+        {
+            var dataFour = data.Where(a => a.Salary >= 2000 && a.Salary <= 5000);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataFour);
+        }
+        else if (salary == SortSalary.FiveThousand)
+        {
+            var dataFive = data.Where(a => a.Salary >= 5000);
+            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataFive);
+        }
+
+        return adver;
+    }
 
     public async Task UpdateAsync(int id, AdvertismentUpdateDto dto)
     {
@@ -381,5 +443,24 @@ public class AdvertismentService : IAdvertismentService
             await _textService.UpdateAsync(new TextUpdateItemDto { Content = texts[i] }, ids[i]);
         }
         await _textRepository.SaveAsync();
+    }
+
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdverCity(string city)
+    {
+        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
+        var data = _repo.FindAllAsync(a => a.State == State.Accept && a.City == city, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+        adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(data);
+        return adver;
+    }
+
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdverDate(FilterDate date)
+    {
+        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
+
+        var filteredData = _repo.FindAllAsync(a => a.CreateDate >= DateTime.Now.AddDays(-(int)date) && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+        var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
+        adver = map;
+
+        return adver;
     }
 }
