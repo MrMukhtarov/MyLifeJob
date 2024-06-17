@@ -26,8 +26,8 @@ public interface IAdvertismentService
     Task CreateRequirementInAdvertismentAsync(List<string> context, int adverId);
     Task DeleteRequirementInAdvertismetUpdateAsync(List<int> ids, int adverId);
     Task<ICollection<AdvertismentListItemDto>> Filter(FilteredAdvertismentDto filter);
-    Task<ICollection<AdvertismentListItemDto>> SortAdver(Sort sort);
-    Task<ICollection<AdvertismentListItemDto>> SortAdverSalary(SortSalary salary);
-    Task<ICollection<AdvertismentListItemDto>> SortAdverCity(string city);
-    Task<ICollection<AdvertismentListItemDto>> SortAdverDate(FilterDate date);
+    Task<ICollection<AdvertismentListItemDto>> SortAdver(Sort? sort, ICollection<AdvertismentListItemDto> adver);
+    Task<ICollection<AdvertismentListItemDto>> SortAdverSalary(SortSalary? salary, ICollection<AdvertismentListItemDto> adver);
+    Task<ICollection<AdvertismentListItemDto>> SortAdverCity(string? city, ICollection<AdvertismentListItemDto> adver);
+    Task<ICollection<AdvertismentListItemDto>> SortAdverDate(FilterDate? date, ICollection<AdvertismentListItemDto> adver);
 }

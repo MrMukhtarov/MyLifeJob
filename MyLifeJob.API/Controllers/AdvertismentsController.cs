@@ -141,14 +141,14 @@ public class AdvertismentsController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> FilteredData([FromQuery] FilteredAdvertismentDto dto)
+    public async Task<IActionResult> Filtered([FromQuery] FilteredAdvertismentDto dto)
     {
         return Ok(await _service.Filter(dto));
     }
 
-    [HttpGet("[action]")]
-    public async Task<IActionResult> Test(FilterDate date)
-    {
-        return Ok(await _service.SortAdverDate(date));
-    }
+    //[HttpGet("[action]")]
+    //public async Task<IActionResult> Test(FilterDate date)
+    //{
+    //    return Ok(await _service.SortAdverDate(date));
+    //}
 }

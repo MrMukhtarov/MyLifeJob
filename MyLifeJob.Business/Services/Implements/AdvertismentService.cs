@@ -56,8 +56,13 @@ public class AdvertismentService : IAdvertismentService
 
     public async Task<ICollection<AdvertismentListItemDto>> AcceptGetall()
     {
-        var entity = _repo.FindAllAsync(a => a.IsDeleted == false && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability");
-        return _mapper.Map<ICollection<AdvertismentListItemDto>>(entity);
+        var entity = _repo.FindAllAsync(a => a.IsDeleted == false && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+        var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(entity);
+        foreach (var item in map)
+        {
+            item.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Company.Logo;
+        }
+        return map;
     }
 
     public async Task AcceptState(int id)
@@ -297,14 +302,26 @@ public class AdvertismentService : IAdvertismentService
     public async Task<ICollection<AdvertismentListItemDto>> Filter(FilteredAdvertismentDto filter)
     {
         ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
+        var filteredData = _repo.FindAllAsync(a => a.IsDeleted == false && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+        var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
+        adver = map;
 
+        if (filter.Sort != null)
+        {
+            adver = await SortAdver(filter.Sort, adver);
+        }
+        if (filter.City != null)
+        {
+            adver = await SortAdverCity(filter.City, adver);
+        }
         if (filter.Date != null)
         {
-            var filteredData = _repo.FindAllAsync(a => a.CreateDate >= DateTime.Now.AddDays(-(int)filter.Date) && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
-            var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
-            adver = map;
+            adver = await SortAdverDate(filter.Date, adver);
         }
-
+        if (filter.SortSalary != null)
+        {
+            adver = await SortAdverSalary(filter.SortSalary, adver);
+        }
         foreach (var item in adver)
         {
             item.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Company.Logo;
@@ -313,68 +330,84 @@ public class AdvertismentService : IAdvertismentService
         return adver;
     }
 
-    public async Task<ICollection<AdvertismentListItemDto>> SortAdver(Sort sort)
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdver(Sort? sort, ICollection<AdvertismentListItemDto> adver)
     {
-        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
-        var data = await _repo.FindAllAsync(a => a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company").ToListAsync();
+        ICollection<AdvertismentListItemDto>? advers = new List<AdvertismentListItemDto>();
 
         if (sort == Sort.Salary)
         {
-            var sortDataSalary = data.OrderByDescending(a => a.Salary);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataSalary);
+            var sortDataSalary = adver.OrderByDescending(a => a.Salary);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataSalary);
         }
         else if (sort == Sort.Position)
         {
-            var sortDataTitle = data.OrderBy(a => a.Title);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataTitle);
+            var sortDataTitle = adver.OrderBy(a => a.Title);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataTitle);
         }
         else if (sort == Sort.Company)
         {
-            var sortDataCompany = data.OrderBy(a => a.Company.Name);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataCompany);
+            var sortDataCompany = adver.OrderBy(a => a.Company.Name);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataCompany);
         }
         else if (sort == Sort.View)
         {
-            var sortDataView = data.OrderByDescending(a => a.ViewCount);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataView);
+            var sortDataView = adver.OrderByDescending(a => a.ViewCount);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(sortDataView);
         }
 
-        return adver;
+        return advers;
     }
-    public async Task<ICollection<AdvertismentListItemDto>> SortAdverSalary(SortSalary salary)
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdverSalary(SortSalary? salary, ICollection<AdvertismentListItemDto> adver)
     {
-        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
-        var data = _repo.FindAllAsync(a => a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+        ICollection<AdvertismentListItemDto>? advers = new List<AdvertismentListItemDto>();
 
         if (salary == SortSalary.ZeroFiveHundred)
         {
-            var dataOne = data.Where(a => a.Salary > 0 && a.Salary <= 500);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataOne);
+            var dataOne = adver.Where(a => a.Salary > 0 && a.Salary <= 500);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataOne);
         }
         else if (salary == SortSalary.FiveHundredOneThousand)
         {
-            var dataTwo = data.Where(a => a.Salary >= 500 && a.Salary <= 1000);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataTwo);
+            var dataTwo = adver.Where(a => a.Salary >= 500 && a.Salary <= 1000);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataTwo);
         }
         else if (salary == SortSalary.OneThousandTwoousand)
         {
-            var dataThree = data.Where(a => a.Salary >= 1000 && a.Salary <= 2000);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataThree);
+            var dataThree = adver.Where(a => a.Salary >= 1000 && a.Salary <= 2000);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataThree);
         }
         else if (salary == SortSalary.TwoThousandFiveThousand)
         {
-            var dataFour = data.Where(a => a.Salary >= 2000 && a.Salary <= 5000);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataFour);
+            var dataFour = adver.Where(a => a.Salary >= 2000 && a.Salary <= 5000);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataFour);
         }
         else if (salary == SortSalary.FiveThousand)
         {
-            var dataFive = data.Where(a => a.Salary >= 5000);
-            adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataFive);
+            var dataFive = adver.Where(a => a.Salary >= 5000);
+            advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(dataFive);
         }
 
-        return adver;
+        return advers;
     }
 
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdverCity(string? city, ICollection<AdvertismentListItemDto> adver)
+    {
+        ICollection<AdvertismentListItemDto>? advers = new List<AdvertismentListItemDto>();
+        var data = adver.Where(a => a.City == city);
+        advers = _mapper.Map<ICollection<AdvertismentListItemDto>>(data);
+        return advers;
+    }
+
+    public async Task<ICollection<AdvertismentListItemDto>> SortAdverDate(FilterDate? date, ICollection<AdvertismentListItemDto> adver)
+    {
+        ICollection<AdvertismentListItemDto>? advers = new List<AdvertismentListItemDto>();
+        var filteredData = adver.Where(a => a.CreateDate >= DateTime.Now.AddDays(-(int)date));
+
+        var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
+        advers = map;
+
+        return advers;
+    }
     public async Task UpdateAsync(int id, AdvertismentUpdateDto dto)
     {
         if (id < 0) throw new IdIsNegativeException<Advertisment>();
@@ -445,22 +478,4 @@ public class AdvertismentService : IAdvertismentService
         await _textRepository.SaveAsync();
     }
 
-    public async Task<ICollection<AdvertismentListItemDto>> SortAdverCity(string city)
-    {
-        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
-        var data = _repo.FindAllAsync(a => a.State == State.Accept && a.City == city, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
-        adver = _mapper.Map<ICollection<AdvertismentListItemDto>>(data);
-        return adver;
-    }
-
-    public async Task<ICollection<AdvertismentListItemDto>> SortAdverDate(FilterDate date)
-    {
-        ICollection<AdvertismentListItemDto>? adver = new List<AdvertismentListItemDto>();
-
-        var filteredData = _repo.FindAllAsync(a => a.CreateDate >= DateTime.Now.AddDays(-(int)date) && a.State == State.Accept, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
-        var map = _mapper.Map<ICollection<AdvertismentListItemDto>>(filteredData);
-        adver = map;
-
-        return adver;
-    }
 }
