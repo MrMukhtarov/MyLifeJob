@@ -61,8 +61,33 @@ public class AdvertismentService : IAdvertismentService
         foreach (var item in map)
         {
             item.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + item.Company.Logo;
+            var cat = await _category.FindByIdAsync(item.CategoryId);
+            item.Category = cat.Name;
         }
         return map;
+    }
+    public async Task<AdvertismentDetailItemDto> GetByIdAsync(bool takeAll, int id)
+    {
+        if (id < 0) throw new IdIsNegativeException<Advertisment>();
+        if (takeAll)
+        {
+            var entity = await _repo.FindByIdAsync(id, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+            if (entity == null) throw new NotFoundException<Advertisment>();
+            return _mapper.Map<AdvertismentDetailItemDto>(entity);
+        }
+        else
+        {
+            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company");
+            if (entity == null) throw new NotFoundException<Advertisment>();
+            entity.ViewCount++;
+            await _repo.SaveAsync();
+            var map = _mapper.Map<AdvertismentDetailItemDto>(entity);
+            map.Company.Logo = _config["Jwt:Issuer"] + "wwwroot/" + map.Company.Logo;
+            var cat = await _category.FindByIdAsync(map.CategoryId);
+            map.Category = cat.Name;
+            map.AdverCount = await AdverCountForDate();
+            return map;
+        }
     }
 
     public async Task AcceptState(int id)
@@ -245,24 +270,6 @@ public class AdvertismentService : IAdvertismentService
             return _mapper.Map<ICollection<AdvertismentListItemDto>>(_repo.FindAllAsync(a => a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements", "Company"));
     }
 
-    public async Task<AdvertismentDetailItemDto> GetByIdAsync(bool takeAll, int id)
-    {
-        if (id < 0) throw new IdIsNegativeException<Advertisment>();
-        if (takeAll)
-        {
-            var entity = await _repo.FindByIdAsync(id, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements");
-            if (entity == null) throw new NotFoundException<Advertisment>();
-            return _mapper.Map<AdvertismentDetailItemDto>(entity);
-        }
-        else
-        {
-            var entity = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "AdvertismentAbilities", "AdvertismentAbilities.Ability", "Texts", "Requirements");
-            if (entity == null) throw new NotFoundException<Advertisment>();
-            entity.ViewCount++;
-            await _repo.SaveAsync();
-            return _mapper.Map<AdvertismentDetailItemDto>(entity);
-        }
-    }
 
     public async Task RejectState(int id)
     {
@@ -440,6 +447,7 @@ public class AdvertismentService : IAdvertismentService
         }
 
 
+
         entity.AdvertismentAbilities = adverAbility;
         await _repo.SaveAsync();
     }
@@ -478,4 +486,28 @@ public class AdvertismentService : IAdvertismentService
         await _textRepository.SaveAsync();
     }
 
+    public async Task<AdvertismentCountForDatesDto> AdverCountForDate()
+    {
+        var adver = _repo.GetAllAsync();
+        int day = 0;
+        int week = 0;
+        int month = 0;
+        foreach (var item in adver)
+        {
+            if (item.CreateDate.Day == DateTime.Now.Day)
+            {
+                day++;
+            }
+            if (item.CreateDate >= DateTime.Now.AddDays(-7))
+            {
+                week++;
+            }
+            if (item.CreateDate.Month == DateTime.Now.Month)
+            {
+                month++;
+            }
+        }
+        var res = new AdvertismentCountForDatesDto { Day = day, Week = week, Month = month };
+        return res;
+    }
 }

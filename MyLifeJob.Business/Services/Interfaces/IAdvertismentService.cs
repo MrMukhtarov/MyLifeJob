@@ -30,4 +30,5 @@ public interface IAdvertismentService
     Task<ICollection<AdvertismentListItemDto>> SortAdverSalary(SortSalary? salary, ICollection<AdvertismentListItemDto> adver);
     Task<ICollection<AdvertismentListItemDto>> SortAdverCity(string? city, ICollection<AdvertismentListItemDto> adver);
     Task<ICollection<AdvertismentListItemDto>> SortAdverDate(FilterDate? date, ICollection<AdvertismentListItemDto> adver);
+    Task<AdvertismentCountForDatesDto> AdverCountForDate();
 }

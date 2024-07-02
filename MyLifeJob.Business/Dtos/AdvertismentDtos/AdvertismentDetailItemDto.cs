@@ -1,4 +1,5 @@
-﻿using MyLifeJob.Business.Dtos.RequirementDtos;
+﻿using MyLifeJob.Business.Dtos.CompanyDtos;
+using MyLifeJob.Business.Dtos.RequirementDtos;
 using MyLifeJob.Business.Dtos.TextDtos;
 using MyLifeJob.Core.Enums;
 
@@ -15,6 +16,7 @@ public record AdvertismentDetailItemDto
     public IEnumerable<AdvertismentAbilityDto>? AdvertismentAbilities { get; set; }
     public ICollection<TextListItemDtos> Texts { get; set; }
     public ICollection<RequirementListItemDto> Requirements { get; set; }
+    public CompanySingleItemDto Company { get; set; }
     public string? Experience { get; set; }
     public string? Education { get; set; }
     public int ViewCount { get; set; }
@@ -22,5 +24,7 @@ public record AdvertismentDetailItemDto
     public DateTime CreateDate { get; set; }
     public bool IsDeleted { get; set; }
     public int CategoryId { get; set; }
+    public string Category { get; set; }
     public string State { get; set; }
+    public AdvertismentCountForDatesDto AdverCount { get; set; }
 }

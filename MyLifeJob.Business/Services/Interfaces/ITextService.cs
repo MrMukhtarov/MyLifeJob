@@ -8,5 +8,6 @@ public interface ITextService
     Task<TextDetailItemDto> GetByIdAsync(int id);
     Task CreateAsync(TextCreateDto dto, int AdverId);
     Task UpdateAsync(TextUpdateItemDto dto, int id);
+    Task UpdateByIdAsync(TextUpdateByIdDtos dto);
     Task DeleteAsync(int id);
 }

@@ -61,4 +61,12 @@ public class TextService : ITextService
         _mapper.Map(dto, entity);
         await _repo.SaveAsync();
     }
+    public async Task UpdateByIdAsync(TextUpdateByIdDtos dto)
+    {
+        if (dto.Id < 0) throw new IdIsNegativeException<Text>();
+        var entity = await _repo.FindByIdAsync(dto.Id);
+        if (entity == null) throw new NotFoundException<Text>();
+        _mapper.Map(dto, entity);
+        await _repo.SaveAsync();
+    }
 }

@@ -34,12 +34,19 @@ public class TextsController : ControllerBase
         return Ok();
     }
 
-    //[HttpPut("[action]")]
-    //public async Task<IActionResult> Update([FromForm] TextUpdateItemDto dto)
-    //{
-    //    await _textService.UpdateAsync(dto);
-    //    return Ok();
-    //}
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> Update([FromForm] TextUpdateItemDto dto,int id)
+    {
+        await _textService.UpdateAsync(dto,id);
+        return Ok();
+    }
+
+    [HttpPut("[action]")]
+    public async Task<IActionResult> UpdateById([FromForm] TextUpdateByIdDtos dto)
+    {
+        await _textService.UpdateByIdAsync(dto);
+        return Ok();
+    }
 
     [HttpDelete("[action]/{id}")]
     public async Task<IActionResult> Delete(int id)

@@ -33,7 +33,7 @@ public class AdvertismentsController : ControllerBase
     [HttpGet("[action]/{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        return Ok(await _service.GetByIdAsync(true, id));
+        return Ok(await _service.GetByIdAsync(false, id));
     }
 
 
@@ -146,9 +146,9 @@ public class AdvertismentsController : ControllerBase
         return Ok(await _service.Filter(dto));
     }
 
-    //[HttpGet("[action]")]
-    //public async Task<IActionResult> Test(FilterDate date)
-    //{
-    //    return Ok(await _service.SortAdverDate(date));
-    //}
+    [HttpGet("[action]")]
+    public async Task<IActionResult> AdverCountForDate()
+    {
+        return Ok(await _service.AdverCountForDate());
+    }
 }

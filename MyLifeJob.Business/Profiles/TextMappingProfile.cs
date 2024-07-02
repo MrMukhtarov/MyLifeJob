@@ -10,6 +10,7 @@ public class TextMappingProfile : Profile
     {
         CreateMap<TextCreateDto, Text>().ReverseMap();
         CreateMap<TextUpdateItemDto, Text>().ReverseMap();
+        CreateMap<TextUpdateByIdDtos, Text>().ReverseMap();
         CreateMap<Text, TextListItemDtos>().ReverseMap();
         CreateMap<Text, TextDetailItemDto>().ReverseMap();
     }
